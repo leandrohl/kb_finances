@@ -1,0 +1,34 @@
+import React from 'react';
+
+import {
+  BrowserRouter, Switch, Route,
+} from 'react-router-dom';
+
+import Login from '../pages/Login';
+
+export const Routes: React.FC = () => {
+  // const isAuth = false;
+
+  // const PrivateRoute = (path: string, exact: boolean,
+  // Component: React.FC<RouteComponentProps>) => {
+  //   return (
+  //     <Route
+  //       path={path}
+  //       exact={exact}
+  //       render={(props: RouteComponentProps) => {
+  //         return (isAuth
+  //           ? <Component {...props} />
+  //           : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />);
+  //       }}
+  //     />
+  //   );
+  // };
+
+  return (
+    <BrowserRouter>
+      <Switch>
+        <Route path="/login" exact component={Login} />
+      </Switch>
+    </BrowserRouter>
+  );
+};
