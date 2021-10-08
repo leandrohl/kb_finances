@@ -1,3 +1,4 @@
+/* eslint-disable arrow-body-style */
 import React, { createContext, useContext } from 'react';
 import { AuthContextData } from './types';
 

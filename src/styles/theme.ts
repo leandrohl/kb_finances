@@ -7,7 +7,7 @@ export const pallet = {
   black: '#000000',
   primary: '#835DAA',
   primaryBlueDark: '#258491',
-  secondaryBlue: '#64c4d2',
+  secondary: '#64c4d2',
   secondaryBlueLight: 'lightblue',
   yellow: '#fcb421',
   red: '#e82727',
@@ -17,10 +17,8 @@ export const pallet = {
   shadow3: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
 };
 
-const Theme = () => {
-  return (
-    pallet
-  );
-};
+const Theme = () => (
+  pallet
+);
 
 export default Theme;
