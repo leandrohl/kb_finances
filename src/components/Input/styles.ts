@@ -9,6 +9,12 @@ export const Container = styled.div(({ theme }) => `
     padding-bottom: 8px;
     color: ${theme.black}
   }
+
+  > span {
+    font-size: 12px;
+    color: ${theme.red};
+    margin-top: 4px;
+  }
 `);
 
 export const ContainerInput = styled.div(({ theme }) => `
