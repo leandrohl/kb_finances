@@ -1,4 +1,5 @@
 import React from 'react';
+<<<<<<< HEAD
 import * as S from './styles';
 
 // import { MonetarioContext } from '../../context/index';
@@ -94,5 +95,15 @@ const Home: React.FC = () => {
     </S.Container>
   );
 };
+=======
+
+// import { Container } from './styles';
+
+const Home: React.FC = () => {
+  return (
+    <> dgsgfs </>
+  );
+}
+>>>>>>> e3570c4d95c33a791e017088cbef329d8318b131
 
 export default Home;

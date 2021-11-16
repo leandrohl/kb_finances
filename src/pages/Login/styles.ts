@@ -26,7 +26,7 @@ export const Logo = styled.div(({ theme }) => `
   }
 `);
 
-export const Form = styled.div(({ theme }) => `
+export const Form = styled.form(({ theme }) => `
    padding: 32px 65px;
    display: flex;
    flex-direction: column;
