@@ -6,9 +6,10 @@ import {
 } from 'react-router-dom';
 
 import Login from '../pages/Login';
+import Home from '../pages/Home';
 
 export const Routes: React.FC = () => {
-  // const isAuth = false;
+  const isAuth = false;
 
   // const PrivateRoute = (path: string, exact: boolean,
   //   Component: React.FC<RouteComponentProps>) => (
@@ -25,6 +26,7 @@ export const Routes: React.FC = () => {
     <BrowserRouter>
       <Switch>
         <Route path="/login" exact component={Login} />
+        <Route path="/" exact component={Home} />
       </Switch>
     </BrowserRouter>
   );

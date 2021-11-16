@@ -10,7 +10,7 @@ interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button: React.FC<IButtonProps> = (props: IButtonProps) => {
   const {
-    text, loading,
+    text, loading
   } = props;
   return (
     <S.Button
