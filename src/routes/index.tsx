@@ -4,6 +4,7 @@ import React from 'react';
 import {
   BrowserRouter, Switch, Route,
 } from 'react-router-dom';
+import Home from '../pages/Home';
 
 import Login from '../pages/Login';
 
@@ -25,6 +26,7 @@ export const Routes: React.FC = () => {
     <BrowserRouter>
       <Switch>
         <Route path="/login" exact component={Login} />
+        <Route path="/home" exact component={Home} />
       </Switch>
     </BrowserRouter>
   );
