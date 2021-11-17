@@ -7,7 +7,6 @@ import {
 import Home from '../pages/Home';
 
 import Login from '../pages/Login';
-import Home from '../pages/Home';
 
 export const Routes: React.FC = () => {
   const isAuth = false;
@@ -27,11 +26,7 @@ export const Routes: React.FC = () => {
     <BrowserRouter>
       <Switch>
         <Route path="/login" exact component={Login} />
-<<<<<<< HEAD
-        <Route path="/home" exact component={Home} />
-=======
         <Route path="/" exact component={Home} />
->>>>>>> e3570c4d95c33a791e017088cbef329d8318b131
       </Switch>
     </BrowserRouter>
   );

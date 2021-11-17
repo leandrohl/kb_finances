@@ -20,8 +20,8 @@ export const ButtonsAdd = styled.div`
 
 export const Button = styled.button`
     margin: 0 32px;
-    padding: 20px 40px;
-    font-size: 20px;
+    padding: 16px 32px;
+    font-size: 16px;
     font-weight: 600;
     border: 0;
     color: #FFFFFF;
