@@ -21,7 +21,7 @@ const Login: React.FC = () => {
     try {
       const response = await api.post('/route/login.php', registration);
 
-      if (response) {
+      if (response.data.status !== 401) {
         console.log(response);
         signIn({
           user: {

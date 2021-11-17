@@ -1,19 +1,55 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as S from './styles';
 
 import { useMonetary } from '../../contexts/Monetary';
 import Header from './components/Header';
 import CardReceitaDespesa from './components/CardReceitaDespesa'
 import CardReceitas from './components/CardReceitaDespesa';
+import api from '../../services/axios';
+
+export class Movimentacao {
+  category = "";
+  description = "";
+  entry_date = "";
+  receipt_date = null
+  value = "";
+}
 
 const Home: React.FC = () => {
-  const { despesas, receitas } = useMonetary();
-
-  const teste = 1;
-  console.log(teste);
+  // const { despesas, receitas } = useMonetary();
 
   const [openAdicionarReceita, setOpenAdicionarReceita] = useState(false);
   const [openAdicionarDespesa, setOpenAdicionarDespesa] = useState(false);
+
+  const [receitas, setReceitas] = useState<Movimentacao[]>([]);
+  const [despesas, setDespesas] = useState<Movimentacao[]>([]);
+
+  const buscarDespesas = async () => {
+    try {
+      const response = await api.get('/route/expense.php?operation=r');
+      if(response) {
+        setDespesas(response.data)
+      }
+    } catch {
+
+    }
+  }
+
+  const buscarReceitas = async () => {
+    try {
+      const response = await api.get('/route/income.php?operation=r');
+      if(response) {
+        setReceitas(response.data)
+      }
+    } catch {
+
+    }
+  }
+
+  useEffect(() => {
+    buscarReceitas()
+    buscarDespesas()
+  }, [])
 
   const closeAdicionarReceita = () => {
     setOpenAdicionarReceita(false);
@@ -34,9 +70,9 @@ const Home: React.FC = () => {
   const renderDespesas = () => (
     despesas.map((despesa, index) => (
       <S.Despesa key={index}>
-        <span>{despesa.descricao}</span>
-        <span>{despesa.categoria}</span>
-        <span>{despesa.custo}</span>
+        <span>{despesa.category}</span>
+        <span>{despesa.description}</span>
+        <span>R$ {despesa.value}</span>
       </S.Despesa>
     ))
   );
@@ -44,9 +80,9 @@ const Home: React.FC = () => {
   const renderReceitas = () => (
     receitas.map((receita, index) => (
       <S.Receita key={index}>
-        <span>{receita.descricao}</span>
-        <span>{receita.categoria}</span>
-        <span>{receita.custo}</span>
+        <span>{receita.category}</span>
+        <span>{receita.description}</span>
+        <span>R$ {receita.value}</span>
       </S.Receita>
     ))
   );

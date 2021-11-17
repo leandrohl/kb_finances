@@ -1,14 +1,12 @@
 import axios from 'axios';
 
-const headers = {
-  'Content-Type': 'application/json',
-  'Authorization': 'JWT fefege...',
-  'mode': 'cors'
-}
+// const headers = {
+//   'Content-Type': 'application/json',
+//   'Authorization': 'JWT fefege...',
+// }
 
 const apiConfig = axios.create({
-  baseURL: 'https://kbfinances.herokuapp.com',
-  headers: headers
+  baseURL: 'http://localhost:5000'
 });
 
 // apiConfig.interceptors.request.use(async (config) => {
