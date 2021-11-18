@@ -1,18 +1,26 @@
-import { createContext, useContext, useState } from "react";
-import { MonetaryContextData, Movimentacao } from "./types";
+import { createContext, useContext, useEffect, useState } from "react";
+import api from "../../services/axios";
+import { MonetaryContextData, DespesaInfo, ReceitaInfo } from "./types";
 
 export const MonetaryContext = createContext({} as MonetaryContextData)
 
 
 export const MonetaryProvider: React.FC = ({ children }) => {
+  const [receitas, setReceitas] = useState<ReceitaInfo[]>([]);
+  const [despesas, setDespesas] = useState<DespesaInfo[]>([]);
 
-  const [receitas, setReceitas] = useState<Movimentacao[]>([]);
-  const [despesas, setDespesas] = useState<Movimentacao[]>([]);
+  const adicionarReceitas = (receitasInfo: ReceitaInfo[]) => {
+    setReceitas([...receitas, ...receitasInfo])
+  }
 
-  const adicionarReceita = (receita: Movimentacao) => {
+  const adicionarDespesas = (despesasInfo: DespesaInfo[]) => {
+    setDespesas([...despesas, ...despesasInfo])
+  }
+
+  const adicionarReceita = (receita: ReceitaInfo) => {
     setReceitas([...receitas, receita])
   }
-  const adicionarDespesa = (despesa: Movimentacao) => {
+  const adicionarDespesa = (despesa: DespesaInfo) => {
     setDespesas([...despesas, despesa])
   }
 
@@ -20,6 +28,8 @@ export const MonetaryProvider: React.FC = ({ children }) => {
     <MonetaryContext.Provider value={{
       adicionarDespesa,
       adicionarReceita,
+      adicionarReceitas,
+      adicionarDespesas,
       receitas,
       despesas,
     }} >

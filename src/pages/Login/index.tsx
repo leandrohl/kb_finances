@@ -6,7 +6,7 @@ import { Registrations, RegistrationsErrors } from './types';
 import * as S from './styles';
 import api from '../../services/axios';
 import { useAuth } from '../../contexts/Auth';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 const Login: React.FC = () => {
   const [registration, setRegistration] = useState<Registrations>(new Registrations());
@@ -14,26 +14,53 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { signIn, userLogged } = useAuth()
 
+  useEffect(() => {
+    console.log(registrationError)
+  }, [registrationError])
+
+  const validateRequiredFields = (requiredFields: object) => {
+    const fieldsArr = Object.keys(requiredFields);
+    let errors = {...registrationError}
+
+    fieldsArr.forEach((field) => {
+      console.log(field)
+      if (!requiredFields) {
+        setRegistrationError({
+          ...errors,
+          [field]: 'Esse campo é de preenchimento obrigatório',
+        })
+    }});
+    // setRegistrationError(errors)
+  };
+
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     setLoading(true);
-    
-    try {
-      const response = await api.post('/route/login.php', registration);
 
-      if (response.data.status !== 401) {
-        console.log(response);
-        signIn({
-          user: {
-            email: registration.email,
-            password: registration.password
-          }, 
-          signed: true
-        });
+    if (!registration.email || !registration.password) validateRequiredFields(registrationError)
+    else {
+      try {
+        const response = await api.post('/route/login.php', registration);
+
+        if (response.status) {
+          signIn({
+            user: {
+              email: registration.email,
+              password: registration.password
+            },
+            signed: true
+          });
+        }
+      } catch (e: any) {
+        console.log(e.message)
+        if (e.property === 'email') {
+          setRegistrationError({ ...registrationError, email: e.message })
+        } else if (e.property === 'password') {
+          setRegistrationError({ ...registrationError, password: e.message })
+        }
       }
-    } catch {
-      console.log(e);
     }
+
     setLoading(false);
   };
 
@@ -67,6 +94,9 @@ const Login: React.FC = () => {
             type="email"
             value={registration.email}
             onChange={(e) => setRegistration({ ...registration, email: e.target.value })}
+            error={!!registrationError.email}
+            labelError={registrationError.email}
+            required
           />
           <Input
             label="Senha"
@@ -74,6 +104,9 @@ const Login: React.FC = () => {
             type="password"
             value={registration.password}
             onChange={(e) => setRegistration({ ...registration, password: e.target.value })}
+            error={!!registrationError.password}
+            labelError={registrationError.password}
+            required
           />
           <Button
             text="Entrar"

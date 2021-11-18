@@ -22,13 +22,13 @@ export const AuthProvider: React.FC = ({ children }) => {
     // update state to save user logged in context provider
     setUser(user);
     // eslint-disable-next-line no-console
-    console.log(user);
   };
 
   const signOut = () => {
     // localStorage.removeItem('user');
     // localStorage.removeItem(tokenKeyByType[data.user.user_type]);
     setUser({} as DataState);
+
   };
 
   return (

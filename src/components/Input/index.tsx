@@ -13,7 +13,7 @@ interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 const Input: React.FC<IInputProps> = (props: IInputProps) => {
   const {
-    name, label, value, onChange, type, error, labelError,
+    name, label, value, onChange, type, error, labelError, required
   } = props;
 
   const [showPassword, setShowPassword] = useState(false);
@@ -36,7 +36,8 @@ const Input: React.FC<IInputProps> = (props: IInputProps) => {
           id={name}
           value={value}
           onChange={onChange}
-          type={type === 'password' ? (renderTypePassword) : 'text'}
+          type={type === 'password' ? (renderTypePassword) : type}
+          required={required}
         />
         {type === 'password' && (renderPasswordIcon)}
       </S.ContainerInput>

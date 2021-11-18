@@ -9,19 +9,29 @@ export const Container = styled.header`
 export const ContainerMenu = styled.div`
     padding-top: 16px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
 `;
 
 export const Data = styled.span`
     display: flex;
     justify-content: space-between;
-    border: solid 2px #FFFFFF;
-    color: #FFFFFF;
+    border: solid 2px ${(props) => props.theme.white};;
+    color: ${(props) => props.theme.white};;
     border-radius: 32px;
     font-size: 16px;
     font-weight: 500;
     padding: 0 4px;
     width: 200px;
+`;
+
+export const Logout = styled.button`
+    color: ${(props) => props.theme.white};
+    font-size: 12px;
+    margin-right: 16px;
+    border: solid 2px ${(props) => props.theme.white};;
+    padding: 4px 4px;
+    border-radius: 32px;
+    background: transparent;
 `;
 
 export const ContainerInfos = styled.div`

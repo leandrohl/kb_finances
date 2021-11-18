@@ -1,12 +1,17 @@
 import React from 'react';
 
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import { useAuth } from '../../../../contexts/Auth';
 // import { FaPiggyBank } from 'react-icons/fa';
 import * as S from './styles';
 
-const Header: React.FC = () => (
+const Header: React.FC = () => {
+  const {signOut} = useAuth()
+
+  return(
   <S.Container>
     <S.ContainerMenu>
+      <div></div>
       <S.Data>
         <IoIosArrowBack
           size={16}
@@ -16,7 +21,8 @@ const Header: React.FC = () => (
           size={16}
         />
       </S.Data>
-    </S.ContainerMenu>
+      <S.Logout onClick={() => signOut()}>Logout</S.Logout>
+    </S.ContainerMenu> 
     <S.ContainerInfos>
       <S.Info>
         <span>Receitas</span>
@@ -39,6 +45,6 @@ const Header: React.FC = () => (
       </S.Info>
     </S.ContainerInfos>
   </S.Container>
-);
+)};
 
 export default Header;

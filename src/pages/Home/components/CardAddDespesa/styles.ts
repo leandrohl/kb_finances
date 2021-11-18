@@ -17,7 +17,7 @@ export const ContainerCard = styled.div`
     display: flex;
     flex-direction: column;
     background: #FFFFFF;
-    width: 30%;
+    width: 400px;
     max-width: 1000px;
     border-radius: 5px;
     box-shadow: 0 0 60px rgba(0, 0, 0, 0.05);
@@ -30,7 +30,7 @@ export const ContainerTitle = styled.div`
     font-weight: bold;
 `
 
-export const ContainerBody = styled.div`
+export const Form = styled.form`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -43,17 +43,14 @@ export const ContainerInput = styled.div`
     text-align: start;
     justify-content: center;
     align-items: center;
-    span{ 
-        width: 30%;
-    }
-    input {
-        width: 40%;
-        height: 32px;
+
+    div {
+      width: 100%;
     }
 `
 
 
-export const ContainerButtons = styled.div`
+export const ContainerButton = styled.div`
     display: flex;
     padding: 8px 0;
     justify-content: center;

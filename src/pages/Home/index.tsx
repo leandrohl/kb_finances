@@ -3,32 +3,25 @@ import * as S from './styles';
 
 import { useMonetary } from '../../contexts/Monetary';
 import Header from './components/Header';
-import CardReceitaDespesa from './components/CardReceitaDespesa'
-import CardReceitas from './components/CardReceitaDespesa';
-import api from '../../services/axios';
+import CardAddReceita from './components/CardAddReceita'
+import CardAddDespesa from './components/CardAddDespesa'
 
-export class Movimentacao {
-  category = "";
-  description = "";
-  entry_date = "";
-  receipt_date = null
-  value = "";
-}
+import api from '../../services/axios';
+import { DespesaInfo, ReceitaInfo } from '../../contexts/Monetary/types';
+
+
 
 const Home: React.FC = () => {
-  // const { despesas, receitas } = useMonetary();
+  const { despesas, receitas, adicionarReceitas, adicionarDespesas } = useMonetary();
 
   const [openAdicionarReceita, setOpenAdicionarReceita] = useState(false);
   const [openAdicionarDespesa, setOpenAdicionarDespesa] = useState(false);
-
-  const [receitas, setReceitas] = useState<Movimentacao[]>([]);
-  const [despesas, setDespesas] = useState<Movimentacao[]>([]);
 
   const buscarDespesas = async () => {
     try {
       const response = await api.get('/route/expense.php?operation=r');
       if(response) {
-        setDespesas(response.data)
+        adicionarDespesas(response.data)
       }
     } catch {
 
@@ -39,7 +32,7 @@ const Home: React.FC = () => {
     try {
       const response = await api.get('/route/income.php?operation=r');
       if(response) {
-        setReceitas(response.data)
+        adicionarReceitas(response.data)
       }
     } catch {
 
@@ -60,11 +53,11 @@ const Home: React.FC = () => {
   };
 
   const renderModalAdicionarReceita = () => (
-    <CardReceitaDespesa close={closeAdicionarReceita} />
+    <CardAddReceita close={closeAdicionarReceita} />
   );
 
   const renderModalAdicionarDespesa = () => (
-    <CardReceitaDespesa close={closeAdicionarDespesa} />
+    <CardAddDespesa close={closeAdicionarDespesa} />
   );
 
   const renderDespesas = () => (
