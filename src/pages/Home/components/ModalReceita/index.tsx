@@ -10,21 +10,21 @@ import {
 } from './styles'
 
 import { useMonetary } from '../../../../contexts/Monetary';
-import { ICardReceitaDespesa } from './types';
-import { DespesaInfo, ReceitaInfo } from '../../../../contexts/Monetary/types';
+import { CategoryReceita, IModalReceitaProps } from './types';
+import { ReceitaInfo } from './types';
 import api from '../../../../services/axios'
 import Button from '../../../../components/Button';
 import { useAuth } from '../../../../contexts/Auth';
 import Input from '../../../../components/Input';
 import Select from '../../../../components/Select';
 
-const CardAddDespesa = (props: ICardReceitaDespesa) => {
-  const { close } = props;
+const ModalReceita = (props: IModalReceitaProps) => {
+  const { close, modeEdition, id } = props;
 
-  const { adicionarDespesa } = useMonetary()
+  const { adicionarReceita, editarReceita } = useMonetary()
   const {userLogged} = useAuth()
 
-  const [registration, setRegistration] = useState<DespesaInfo>(new DespesaInfo());
+  const [registration, setRegistration] = useState<ReceitaInfo>(new ReceitaInfo());
   const [loading, setLoading] = useState(false)
 
   // useEffect(() => {
@@ -33,20 +33,38 @@ const CardAddDespesa = (props: ICardReceitaDespesa) => {
   //   }
   // }, [custo, descricao, categoria, dataLancamento, dataRecebimento])
 
-  const handleSubmit = async (e: SyntheticEvent) => {
+  const buscarInfoReceita = async () => {
+    try {
+      const response = await api.post('/route/income.php?operation=f', {id});
+      if(response) {
+        setRegistration(response.data[0])
+      }
+    } catch {
+
+    }
+  }
+
+  useEffect(() => {
+    if (modeEdition && id) {
+      buscarInfoReceita()
+    }
+  }, [modeEdition])
+
+  const addReceita = async (e: SyntheticEvent) => {
+    console.log('hahahah')
     e.preventDefault();
     setLoading(true)
 
     try {
-      const req: DespesaInfo = {
+      const req = {
         ...registration,
         email: 'gabriel@email.com'
       }
       
-      const response = await api.post('/route/expense.php?operation=c', req);
+      const response = await api.post('/route/income.php?operation=c', req);
 
       if(response.status) {
-        adicionarDespesa(registration);
+        adicionarReceita({...registration, id: response.data.id});
         close();
       }
     } catch {
@@ -55,9 +73,36 @@ const CardAddDespesa = (props: ICardReceitaDespesa) => {
     setLoading(false)
   }
 
+  const editReceita = async (e: SyntheticEvent) => {
+    e.preventDefault();
+    setLoading(true)
+
+    if (id) {
+      try {
+        const req = {
+          ...registration,
+          id,
+          email: 'gabriel@email.com'
+        }
+        
+        const response = await api.post('/route/income.php?operation=u', req);
+  
+        if(response.status) {
+          editarReceita(req);
+          close();
+        }
+      } catch {
+  
+      }
+    }
+    
+    setLoading(false)
+  }
+
   const onEnterDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
     if (event.key === 'Enter') {
-      handleSubmit(event)
+      if (modeEdition) editReceita(event) 
+      else addReceita(event)
     }
   }
 
@@ -65,9 +110,9 @@ const CardAddDespesa = (props: ICardReceitaDespesa) => {
     <Container>
       <ContainerCard>
         <ContainerTitle>
-          <span>Adicionar Despesa</span>
+          <span>{modeEdition ? 'Editar' : 'Adicionar'} Receita</span>
         </ContainerTitle>
-        <Form onSubmit={(e) => handleSubmit(e)} onKeyPress={onEnterDown}>
+        <Form onSubmit={(e) => modeEdition ? editReceita(e) : addReceita(e)} onKeyPress={onEnterDown}>
           <ContainerInput>
             <Input
               label="Descrição: "
@@ -92,32 +137,22 @@ const CardAddDespesa = (props: ICardReceitaDespesa) => {
             value={registration.category} 
             onChange={(e) => setRegistration({...registration, category: Number(e.target.value)})}
             >
-              <option value={0}>Sobrevivência</option>
-              <option value={1}>Cultura</option>
-              <option value={2}>Extra/Imprevisto</option>
-              <option value={3}>Opcionais</option>
+              <option value={CategoryReceita.Salario}>Salário</option>
+              <option value={CategoryReceita.Presente}>Presente</option>
+              <option value={CategoryReceita.Investimento}>Investimento</option>
             </Select>
           </ContainerInput>
           <ContainerInput>
             <Input
-              label="Data de Pagamento: "
-              name="payment_date"
+              label="Data de Recebimento: "
+              name="receipt_date"
               type="date"
-              value={registration.payment_date}
-              onChange={(e) => setRegistration({...registration, payment_date: e.target.value})}
-            />
-          </ContainerInput>
-          <ContainerInput>
-            <Input
-              label="Data de Vencimento: "
-              name="due_date"
-              type="date"
-              value={registration.due_date}
-              onChange={(e) => setRegistration({...registration, due_date: e.target.value})}
+              value={registration.receipt_date}
+              onChange={(e) => setRegistration({...registration, receipt_date: e.target.value})}
             />
           </ContainerInput>
           <ContainerButton>
-            <Button loading={loading} text="Adicionar"/>
+            <Button loading={loading} text={modeEdition ? 'Editar' : 'Adicionar'}/>
           </ContainerButton>
         </Form>
         
@@ -127,4 +162,4 @@ const CardAddDespesa = (props: ICardReceitaDespesa) => {
   )
 }
 
-export default CardAddDespesa;
+export default ModalReceita;

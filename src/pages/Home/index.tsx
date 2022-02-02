@@ -3,19 +3,25 @@ import * as S from './styles';
 
 import { useMonetary } from '../../contexts/Monetary';
 import Header from './components/Header';
-import CardAddReceita from './components/CardAddReceita'
-import CardAddDespesa from './components/CardAddDespesa'
+import ModalReceita from '././components/ModalReceita'
+import ModalDespesa from './components/ModalDespesa'
+import DespesaCategoria from './components/DespesaCategoria'
 
 import api from '../../services/axios';
+import { CategoryReceita } from './components/ModalReceita/types';
+import { CategoryDespesa } from './components/ModalDespesa/types';
+
+import { MdModeEdit, MdDelete } from 'react-icons/md';
 import { DespesaInfo, ReceitaInfo } from '../../contexts/Monetary/types';
 
-
-
 const Home: React.FC = () => {
-  const { despesas, receitas, adicionarReceitas, adicionarDespesas } = useMonetary();
+  const { despesas, receitas, adicionarReceitas, adicionarDespesas, excluirReceita, excluirDespesa } = useMonetary();
 
-  const [openAdicionarReceita, setOpenAdicionarReceita] = useState(false);
-  const [openAdicionarDespesa, setOpenAdicionarDespesa] = useState(false);
+  const [openModalReceita, setOpenModalReceita] = useState(false);
+  const [openModalDespesa, setOpenModalDespesa] = useState(false);
+
+  const [modeEdicao, setModoEdicao] = useState(false);
+  const [movimentacaoSelectId, setMovimentacaoSelectId] = useState(-1)
 
   const buscarDespesas = async () => {
     try {
@@ -39,44 +45,89 @@ const Home: React.FC = () => {
     }
   }
 
+  const removerReceita = async (receita: ReceitaInfo) => {
+    try {
+      const { id } = receita
+
+      const response = await api.post('/route/income.php?operation=d', { id });
+
+      if(response.status) {
+        excluirReceita(id);
+      }
+    } catch {
+
+    }
+  }
+
+  const removerDespesa = async (despesa: DespesaInfo) => {
+    try {
+      const { id } = despesa
+
+      const response = await api.post('/route/expense.php?operation=d', { id });
+
+      if(response.status) {
+        excluirDespesa(id);
+      }
+    } catch {
+
+    }
+  }
+
   useEffect(() => {
     buscarReceitas()
     buscarDespesas()
   }, [])
 
-  const closeAdicionarReceita = () => {
-    setOpenAdicionarReceita(false);
+  const closeModalReceita = () => {
+    setOpenModalReceita(false);
   };
 
-  const closeAdicionarDespesa = () => {
-    setOpenAdicionarDespesa(false);
+  const closeModalDespesa = () => {
+    setOpenModalDespesa(false);
   };
-
-  const renderModalAdicionarReceita = () => (
-    <CardAddReceita close={closeAdicionarReceita} />
-  );
-
-  const renderModalAdicionarDespesa = () => (
-    <CardAddDespesa close={closeAdicionarDespesa} />
-  );
 
   const renderDespesas = () => (
     despesas.map((despesa, index) => (
-      <S.Despesa key={index}>
-        <span>{despesa.category}</span>
-        <span>{despesa.description}</span>
-        <span>R$ {despesa.value}</span>
-      </S.Despesa>
+      <S.ContainerMovimentacao key={index}>
+        <div style={{display: 'flex', flexDirection: 'column', width: '100px'}}>
+          <span>{despesa.description}</span>
+          <S.Category color="#D86161">{CategoryDespesa[despesa.category]}</S.Category>
+        </div>
+        <span>R$ {Number(despesa.value).toFixed(2)}</span>
+        <div style={{display: 'flex', cursor: 'pointer'}}>
+          <MdModeEdit 
+            size={20} 
+            onClick={() => {
+              setModoEdicao(true)
+              setMovimentacaoSelectId(despesa.id)
+              setOpenModalDespesa(true)
+          }} />
+          <MdDelete size={20} onClick={() => removerDespesa(despesa)}/>
+        </div>
+      </S.ContainerMovimentacao>
     ))
   );
 
   const renderReceitas = () => (
     receitas.map((receita, index) => (
-      <S.Receita key={index}>
-        <span>{receita.category}</span>
-        <span>{receita.description}</span>
-        <span>R$ {receita.value}</span>
-      </S.Receita>
+      <S.ContainerMovimentacao key={index}>
+        <div style={{display: 'flex', flexDirection: 'column', width: '100px'}}>
+          <span>{receita.description}</span>
+          <S.Category color="#73E07E">{CategoryReceita[receita.category]}</S.Category>
+        </div>
+        <span>R$ {Number(receita.value).toFixed(2)}</span>
+        <div style={{display: 'flex', cursor: 'pointer'}}>
+          <MdModeEdit 
+          size={20} 
+          onClick={() => {
+            setModoEdicao(true)
+            setMovimentacaoSelectId(receita.id)
+            setOpenModalReceita(true)
+          }}
+          />
+          <MdDelete size={20} onClick={() => removerReceita(receita)}/>
+        </div>
+      </S.ContainerMovimentacao>
     ))
   );
 
@@ -85,10 +136,17 @@ const Home: React.FC = () => {
       <Header />
       <S.BodyContainer>
         <S.ButtonsAdd >
-          <S.Button color="#73E07E" onClick={() => setOpenAdicionarReceita(true)}>
+          <S.Button color="#73E07E" onClick={() => {
+            setModoEdicao(false)
+            setOpenModalReceita(true)
+          }}
+          >
             Adicionar Receita
           </S.Button>
-          <S.Button color="#D86161" onClick={() => setOpenAdicionarDespesa(true)}>
+          <S.Button color="#D86161"onClick={() => {
+            setModoEdicao(false)
+            setOpenModalDespesa(true)
+          }}>
             Adicionar Despesa
           </S.Button>
         </S.ButtonsAdd>
@@ -102,11 +160,11 @@ const Home: React.FC = () => {
             {renderDespesas()}
           </S.CardMovimentacao>
         </S.Movimentacoes>
-        {/* <CardHorizontal>
+        <S.CardHorizontal>
           <h3>Despesas por categoria</h3>
-          <DespesasPorCategoria />
-        </CardHorizontal>
-        <CardHorizontal>
+          <DespesaCategoria />
+        </S.CardHorizontal>
+        {/* <CardHorizontal>
           <h3>Economia mensal</h3>
           <EconomiaMensal />
         </CardHorizontal>
@@ -119,8 +177,8 @@ const Home: React.FC = () => {
           <MelhorarEconomia />
         </CardHorizontal> */}
       </S.BodyContainer>
-      {openAdicionarReceita && renderModalAdicionarReceita()}
-      {openAdicionarDespesa && renderModalAdicionarDespesa()}
+      {openModalReceita && <ModalReceita close={closeModalReceita} id={movimentacaoSelectId} modeEdition={modeEdicao}/>}
+      {openModalDespesa && <ModalDespesa close={closeModalDespesa} id={movimentacaoSelectId} modeEdition={modeEdicao} />}
     </S.Container>
   );
 };

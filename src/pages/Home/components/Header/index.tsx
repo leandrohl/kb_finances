@@ -2,11 +2,14 @@ import React from 'react';
 
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { useAuth } from '../../../../contexts/Auth';
+import { useMonetary } from '../../../../contexts/Monetary';
 // import { FaPiggyBank } from 'react-icons/fa';
 import * as S from './styles';
 
 const Header: React.FC = () => {
-  const {signOut} = useAuth()
+  const {signOut, userLogged} = useAuth()
+  const { movimentacaoInfo, receitaInfo, despesaInfo } = useMonetary()
+
 
   return(
   <S.Container>
@@ -16,7 +19,7 @@ const Header: React.FC = () => {
         <IoIosArrowBack
           size={16}
         />
-        maio
+        novembro
         <IoIosArrowForward
           size={16}
         />
@@ -26,12 +29,12 @@ const Header: React.FC = () => {
     <S.ContainerInfos>
       <S.Info>
         <span>Receitas</span>
-        <h2>R$ 0,00</h2>
+        <h2>R$ {receitaInfo.toFixed(2)}</h2>
         <S.Icon color="#66D07E" />
       </S.Info>
       <S.Info>
         <span>Saldo</span>
-        <h2>R$ 0,00</h2>
+        <h2>R$ {(receitaInfo - despesaInfo).toFixed(2)}</h2>
         <S.Icon color="#66CAD0">
           {/* <FaPiggyBank
             size={16}
@@ -40,7 +43,7 @@ const Header: React.FC = () => {
       </S.Info>
       <S.Info>
         <span>Despesas</span>
-        <h2>R$ 0,00</h2>
+        <h2>R$ {despesaInfo.toFixed(2)}</h2>
         <S.Icon color="#DD3A3A" />
       </S.Info>
     </S.ContainerInfos>

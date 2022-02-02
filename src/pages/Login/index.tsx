@@ -46,7 +46,8 @@ const Login: React.FC = () => {
           signIn({
             user: {
               email: registration.email,
-              password: registration.password
+              password: registration.password,
+              balance: response.data.balance
             },
             signed: true
           });

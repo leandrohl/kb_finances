@@ -8,7 +8,8 @@ export interface AuthContextData {
 export interface DataState {
   user : {
     email: string,
-    password: string
+    password: string,
+    balance: string
   }
   signed: boolean
 }
