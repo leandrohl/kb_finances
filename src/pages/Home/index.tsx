@@ -13,6 +13,7 @@ import { CategoryDespesa } from './components/ModalDespesa/types';
 
 import { MdModeEdit, MdDelete } from 'react-icons/md';
 import { DespesaInfo, ReceitaInfo } from '../../contexts/Monetary/types';
+import EconomiaMensal from './components/EconomiaMensal';
 
 const Home: React.FC = () => {
   const { despesas, receitas, adicionarReceitas, adicionarDespesas, excluirReceita, excluirDespesa } = useMonetary();
@@ -25,7 +26,10 @@ const Home: React.FC = () => {
 
   const buscarDespesas = async () => {
     try {
-      const response = await api.get('/route/expense.php?operation=r');
+      const req = {
+        email: 'gabriel@email.com'
+      }
+      const response = await api.post('/route/expense.php?operation=r', req);
       if(response) {
         adicionarDespesas(response.data)
       }
@@ -36,7 +40,11 @@ const Home: React.FC = () => {
 
   const buscarReceitas = async () => {
     try {
-      const response = await api.get('/route/income.php?operation=r');
+      const req = {
+        email: 'gabriel@email.com'
+      }
+
+      const response = await api.post('/route/income.php?operation=r', req);
       if(response) {
         adicionarReceitas(response.data)
       }
@@ -164,18 +172,18 @@ const Home: React.FC = () => {
           <h3>Despesas por categoria</h3>
           <DespesaCategoria />
         </S.CardHorizontal>
-        {/* <CardHorizontal>
+        <S.CardHorizontal>
           <h3>Economia mensal</h3>
           <EconomiaMensal />
-        </CardHorizontal>
-        <CardHorizontal>
+        </S.CardHorizontal>
+        <S.CardHorizontal>
           <h3>Gastos totais</h3>
-          <GastosTotais />
-        </CardHorizontal>
-        <CardHorizontal>
+          {/* <GastosTotais /> */}
+        </S.CardHorizontal>
+        <S.CardHorizontal>
           <h3>Como melhoria minha economia</h3>
-          <MelhorarEconomia />
-        </CardHorizontal> */}
+          {/* <MelhorarEconomia /> */}
+        </S.CardHorizontal>
       </S.BodyContainer>
       {openModalReceita && <ModalReceita close={closeModalReceita} id={movimentacaoSelectId} modeEdition={modeEdicao}/>}
       {openModalDespesa && <ModalDespesa close={closeModalDespesa} id={movimentacaoSelectId} modeEdition={modeEdicao} />}
