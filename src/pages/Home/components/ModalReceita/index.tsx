@@ -14,15 +14,14 @@ import { CategoryReceita, IModalReceitaProps } from './types';
 import { ReceitaInfo } from './types';
 import api from '../../../../services/axios'
 import Button from '../../../../components/Button';
-import { useAuth } from '../../../../contexts/Auth';
 import Input from '../../../../components/Input';
 import Select from '../../../../components/Select';
+import ToastNotification from '../../../../components/ToastNotification';
 
 const ModalReceita = (props: IModalReceitaProps) => {
   const { close, modeEdition, id } = props;
 
   const { adicionarReceita, editarReceita } = useMonetary()
-  const {userLogged} = useAuth()
 
   const [registration, setRegistration] = useState<ReceitaInfo>(new ReceitaInfo());
   const [loading, setLoading] = useState(false)
@@ -35,7 +34,11 @@ const ModalReceita = (props: IModalReceitaProps) => {
 
   const buscarInfoReceita = async () => {
     try {
-      const response = await api.post('/route/income.php?operation=f', {id});
+      const req = {
+        id: id,
+        email: 'gabriel@email.com'
+      }
+      const response = await api.post('/route/income.php?operation=f', req);
       if(response) {
         setRegistration(response.data[0])
       }
@@ -51,7 +54,6 @@ const ModalReceita = (props: IModalReceitaProps) => {
   }, [modeEdition])
 
   const addReceita = async (e: SyntheticEvent) => {
-    console.log('hahahah')
     e.preventDefault();
     setLoading(true)
 
@@ -65,6 +67,10 @@ const ModalReceita = (props: IModalReceitaProps) => {
 
       if(response.status) {
         adicionarReceita({...registration, id: response.data.id});
+        ToastNotification({
+          id: 'alert',
+          content: 'Receita adicionada com sucesso'
+        })
         close();
       }
     } catch {

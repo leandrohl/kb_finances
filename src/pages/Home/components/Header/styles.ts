@@ -63,6 +63,6 @@ export const Info = styled.div`
 export const Icon = styled.div`
     background-color: ${(props) => props.color};
     margin-top: 24px;
-    padding: 28px;
+    padding: 16px 16px 12px 16px;
     border-radius: 50%;
 `;

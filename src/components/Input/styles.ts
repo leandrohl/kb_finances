@@ -45,6 +45,11 @@ export const ContainerInput = styled.div(({ theme }) => `
     margin-left: 130px;
     padding-left: 10px;
    }
+
+   span {
+     padding-left: 8px;
+     font-size: 20px;
+   }
 `);
 
 export const Input = styled.input(({

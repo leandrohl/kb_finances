@@ -7,6 +7,7 @@ import * as S from './styles';
 import api from '../../services/axios';
 import { useAuth } from '../../contexts/Auth';
 import { Redirect } from 'react-router-dom';
+import { IUser } from '../../contexts/Auth/types';
 
 const Login: React.FC = () => {
   const [registration, setRegistration] = useState<Registrations>(new Registrations());
@@ -14,16 +15,11 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { signIn, userLogged } = useAuth()
 
-  useEffect(() => {
-    console.log(registrationError)
-  }, [registrationError])
-
   const validateRequiredFields = (requiredFields: object) => {
     const fieldsArr = Object.keys(requiredFields);
     let errors = {...registrationError}
 
     fieldsArr.forEach((field) => {
-      console.log(field)
       if (!requiredFields) {
         setRegistrationError({
           ...errors,
@@ -40,24 +36,24 @@ const Login: React.FC = () => {
     if (!registration.email || !registration.password) validateRequiredFields(registrationError)
     else {
       try {
-        const response = await api.post('/route/login.php', registration);
+        const response = await api.post<IUser>('/route/login.php', registration);
 
         if (response.status) {
-          signIn({
-            user: {
-              email: registration.email,
-              password: registration.password,
-              balance: response.data.balance
-            },
-            signed: true
-          });
+          const user = {
+            ...response.data,
+            email: registration.email,
+            password: registration.password
+          }
+          signIn(user);
         }
       } catch (e: any) {
-        console.log(e.message)
+
         if (e.property === 'email') {
           setRegistrationError({ ...registrationError, email: e.message })
         } else if (e.property === 'password') {
           setRegistrationError({ ...registrationError, password: e.message })
+        } else {
+
         }
       }
     }

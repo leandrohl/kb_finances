@@ -17,6 +17,7 @@ import Button from '../../../../components/Button';
 import { useAuth } from '../../../../contexts/Auth';
 import Input from '../../../../components/Input';
 import Select from '../../../../components/Select';
+import ToastNotification from '../../../../components/ToastNotification';
 
 const ModalDespesa = (props: IModalDespesaProps) => {
   const { close, id, modeEdition } = props;
@@ -35,7 +36,11 @@ const ModalDespesa = (props: IModalDespesaProps) => {
 
   const buscarInfoDespesa = async () => {
     try {
-      const response = await api.post('/route/expense.php?operation=f', {id});
+      const req = {
+        id: id,
+        email: 'gabriel@email.com'
+      }
+      const response = await api.post('/route/expense.php?operation=f', req);
       if(response) {
         setRegistration(response.data[0])
       }
@@ -64,6 +69,10 @@ const ModalDespesa = (props: IModalDespesaProps) => {
 
       if(response.status) {
         adicionarDespesa({...registration, id: response.data.id});
+        ToastNotification({
+          id: `error-${id}`,
+          content: 'Despesa adicionada com sucesso'
+        })
         close();
       }
     } catch {

@@ -6,6 +6,7 @@ import Header from './components/Header';
 import ModalReceita from '././components/ModalReceita'
 import ModalDespesa from './components/ModalDespesa'
 import DespesaCategoria from './components/DespesaCategoria'
+import ToastNotification from '../../components/ToastNotification'
 
 import api from '../../services/axios';
 import { CategoryReceita } from './components/ModalReceita/types';
@@ -14,8 +15,10 @@ import { CategoryDespesa } from './components/ModalDespesa/types';
 import { MdModeEdit, MdDelete } from 'react-icons/md';
 import { DespesaInfo, ReceitaInfo } from '../../contexts/Monetary/types';
 import EconomiaMensal from './components/EconomiaMensal';
+import { useAuth } from '../../contexts/Auth';
 
 const Home: React.FC = () => {
+  const { userLogged: { user } } = useAuth()
   const { despesas, receitas, adicionarReceitas, adicionarDespesas, excluirReceita, excluirDespesa } = useMonetary();
 
   const [openModalReceita, setOpenModalReceita] = useState(false);
@@ -27,7 +30,7 @@ const Home: React.FC = () => {
   const buscarDespesas = async () => {
     try {
       const req = {
-        email: 'gabriel@email.com'
+        email: user.email
       }
       const response = await api.post('/route/expense.php?operation=r', req);
       if(response) {
@@ -41,7 +44,7 @@ const Home: React.FC = () => {
   const buscarReceitas = async () => {
     try {
       const req = {
-        email: 'gabriel@email.com'
+        email: user.email
       }
 
       const response = await api.post('/route/income.php?operation=r', req);
@@ -52,6 +55,11 @@ const Home: React.FC = () => {
 
     }
   }
+  
+  useEffect(() => {
+    buscarReceitas()
+    buscarDespesas()
+  }, [])
 
   const removerReceita = async (receita: ReceitaInfo) => {
     try {
@@ -61,6 +69,10 @@ const Home: React.FC = () => {
 
       if(response.status) {
         excluirReceita(id);
+        ToastNotification({
+          id: `error-${id}`,
+          content: 'Receita removida com sucesso'
+        })
       }
     } catch {
 
@@ -75,16 +87,16 @@ const Home: React.FC = () => {
 
       if(response.status) {
         excluirDespesa(id);
+        ToastNotification({
+          id: `error-${id}`,
+          content: 'Despesa removida com sucesso'
+        })
       }
     } catch {
 
     }
   }
 
-  useEffect(() => {
-    buscarReceitas()
-    buscarDespesas()
-  }, [])
 
   const closeModalReceita = () => {
     setOpenModalReceita(false);

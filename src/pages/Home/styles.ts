@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const Container = styled.div.attrs({
+  className: 'customScroll'
+})`
 `;
 
 export const BodyContainer = styled.div`
@@ -38,8 +40,10 @@ export const Movimentacoes = styled.div`
     width: 80%;
 `;
 
-export const CardMovimentacao = styled.div`
-    height: 400px;
+export const CardMovimentacao = styled.div.attrs({
+  className: 'customScroll'
+})`
+    max-height: 400px;
     width: 100%;
     background: #FFFFFF;
     margin: 0px 16px;
@@ -89,3 +93,4 @@ export const CardHorizontal = styled.div`
         height: 90%;
     }
 `;
+

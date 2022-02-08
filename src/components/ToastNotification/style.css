@@ -1,0 +1,17 @@
+.toast {
+  background: #835DAA !important;
+  color: #fff;
+  border-radius: 8px !important;
+  padding: 15px !important;
+  display: flex;
+  cursor: pointer;
+  margin: 4px !important;
+  justify-content: flex-start;
+  align-content: center;
+}
+
+.Toastify__close-button--light {
+  color: #fff !important;
+  opacity: 1 !important;
+}
+

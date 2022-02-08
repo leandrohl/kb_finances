@@ -1,40 +1,62 @@
 /* eslint-disable arrow-body-style */
-import React, { createContext, useContext, useState } from 'react';
-import { AuthContextData, DataState } from './types';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { AuthContextData, DataState, IUser } from './types';
+import StorageLocal from '../../utils/StorageLocal'
 
 export const AuthContext = createContext({} as AuthContextData);
 
 export const AuthProvider: React.FC = ({ children }) => {
-  const [user, setUser] = useState<DataState>(() => {
-    // const userString = localStorage.getItem('user');
-    // const user = userString && JSON.parse(userString);
-    // const { user_type } = user || {};
-    // const token = localStorage.getItem(tokenKeyByType[user_type as keyof typeof tokenKeyByType]);
+  const storageLocal = new StorageLocal()
 
-    // if (token) return { user, token };
+  const USER_GET = '@kb_finances'
 
-    return {} as DataState;
-  });
+  const [user, setUser] = useState<DataState>({} as DataState);
 
-  const signIn = (user: DataState) => {
-    // function to save user and token in local storage
-    // setUserToken({ user, token });
-    // update state to save user logged in context provider
-    setUser(user);
-    // eslint-disable-next-line no-console
+  useEffect(() => {
+    const user = getUserSession()
+    
+    if (user) {
+      setUser({
+        user,
+        signed: true,
+      })
+    }
+  }, [])
+
+  const updateEconomy = (newEconomy: number) => {
+    setUser({
+      user: {
+        ...user.user,
+        economy: newEconomy
+      },
+      signed: user.signed
+    })
+  }
+
+  const getUserSession = (): IUser | null =>  {
+    const session = storageLocal.getLocalStorage<IUser>(USER_GET)
+    if (session) {
+      return session
+    }
+    return null
+  }
+
+  const signIn = (user: IUser) => {
+    storageLocal.setLocalStorage(USER_GET, user )
+    setUser({user, signed: true});
   };
 
   const signOut = () => {
-    // localStorage.removeItem('user');
-    // localStorage.removeItem(tokenKeyByType[data.user.user_type]);
     setUser({} as DataState);
-
+    storageLocal.cleanLocalStorage()
+    window.location.replace('/login')
   };
 
   return (
     <AuthContext.Provider value={{
       signIn,
       signOut,
+      updateEconomy,
       userLogged: user
     }}
     >

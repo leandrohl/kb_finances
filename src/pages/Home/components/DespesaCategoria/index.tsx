@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 
 // import { Container } from './styles';
 import { Chart } from "react-google-charts";
+import { useMonetary } from '../../../../contexts/Monetary';
 import api from '../../../../services/axios'
 
 const DespesaCategoria: React.FC = () => {
+  const { despesas } = useMonetary()
 
   const [options, setOptions] = useState({
     pieHole: 0.5,
@@ -16,11 +18,24 @@ const DespesaCategoria: React.FC = () => {
     colors: ['#c6d8f0', '#d8bfd8', '#ffb394', '#ccff99'],
     fontName: 'Montserrat',
   })
-  const [data, setData] = useState([['Categoria', 'Valor']])
+  const [data, setData] = useState([
+    ['Categoria', 'Valor'],
+    ['Sobrevivencia', ''],
+    ['Cultura', ''],
+    ['Extra/Imprevisto', ''],
+    ['Opcionais', ''],
+  ])
 
-  useEffect(() => {
-    console.log(data)
-  }, [data])
+  // useEffect(() => {
+  //   const teste = despesas.map(despesa => {
+  //     switch(despesa.category) {
+  //       case 0: []
+  //       case 1:
+  //       case 2:
+  //       case 3: 
+  //     }
+  //   })
+  // }, [despesas])
 
   const buscarDespesaPorCategoria = async () => {
     try {
