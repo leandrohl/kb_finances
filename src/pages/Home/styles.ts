@@ -1,9 +1,11 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const Container = styled.div.attrs({
   className: 'customScroll'
 })`
-`;
+  width: 100%;
+  height: 100%;
+`
 
 export const BodyContainer = styled.div`
     width: 100%;
@@ -11,14 +13,14 @@ export const BodyContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-`;
+`
 
 export const ButtonsAdd = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 32px 0;
-`;
+`
 
 export const Button = styled.button`
     margin: 0 32px;
@@ -31,14 +33,14 @@ export const Button = styled.button`
     cursor: pointer;
     background: ${(props) => props.color};
     
-`;
+`
 
 export const Movimentacoes = styled.div`
     display: flex;
     justify-content: center;
     padding: 16px 0;
     width: 80%;
-`;
+`
 
 export const CardMovimentacao = styled.div.attrs({
   className: 'customScroll'
@@ -54,7 +56,7 @@ export const CardMovimentacao = styled.div.attrs({
     h3{
         padding: 8px 0;
     }
-`;
+`
 
 export const ContainerMovimentacao = styled.div`
     display: flex;
@@ -63,20 +65,19 @@ export const ContainerMovimentacao = styled.div`
     width: 100%;
     height: 60px;
     margin: 8px 0;
-`;
+`
 
 export const Category = styled.div`
     padding: 4px;
     border: 1px solid ${(props) => props.color};
     border-radius: 20px;
     font-size: 12px;
-`;
+`
 
 export const Info = styled.div`
     display:flex;
     flex-direction: column;
 `
-
 
 export const CardHorizontal = styled.div`
     width: 80%;
@@ -92,5 +93,4 @@ export const CardHorizontal = styled.div`
     img{
         height: 90%;
     }
-`;
-
+`

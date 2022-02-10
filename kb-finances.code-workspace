@@ -1,0 +1,68 @@
+
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "extensions": {
+    "recommendations": [
+      "msjsdiag.debugger-for-chrome",
+      "formulahendry.auto-rename-tag",
+      "ms-vscode.vscode-typescript-tslint-plugin",
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode",
+      "rafaelsalguero.csharp2ts",
+      "visualstudioexptteam.vscodeintellicode",
+      "PKief.material-icon-theme",
+      "eamodio.gitlens",
+      "rocketseat.RocketseatReactJS",
+    ]
+  },
+  "settings": {
+    "typescript.format.insertSpaceBeforeFunctionParenthesis": true,
+    "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+    "workbench.colorCustomizations": {
+      "statusBar.background": "#483b8a"
+    },
+    "gitlens.mode.statusBar.alignment": "left",
+    "gitlens.codeLens.authors.enabled": false,
+    "files.exclude": {
+      "build": true,
+      ".vscode": false,
+      ".readme_content": true
+    },
+    "git.ignoreLimitWarning": true,
+    "gitlens.currentLine.enabled": true,
+    "gitlens.hovers.currentLine.over": "line",
+    "gitlens.currentLine.scrollable": true,
+    "gitlens.codeLens.enabled": true,
+    "typescript.tsdk": "node_modules\\typescript\\lib",
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact"
+    ],
+    "[javascriptreact]": {
+      "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+      }
+    },
+    "editor.formatOnSave": true,
+    "[typescript]": {
+      "editor.formatOnSave": false,
+      "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+      }
+    },
+    "[typescriptreact]": {
+      "editor.formatOnSave": false,
+      "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+      },
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
+  }
+}

@@ -1,6 +1,6 @@
-import React, { SelectHTMLAttributes } from 'react';
+import React, { SelectHTMLAttributes } from 'react'
 
-import * as S from './styles';
+import * as S from './styles'
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   children: React.ReactNode;
@@ -15,8 +15,8 @@ const Select: React.FC<SelectProps> = (props: SelectProps) => {
     required,
     onChange,
     value,
-    disabled,
-  } = props;
+    disabled
+  } = props
 
   return (
     <S.Container>
@@ -32,7 +32,7 @@ const Select: React.FC<SelectProps> = (props: SelectProps) => {
         {children}
       </S.Select>
     </S.Container>
-  );
-};
+  )
+}
 
-export default Select;
+export default Select

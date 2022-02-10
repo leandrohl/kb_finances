@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const Container = styled.div` 
   display: flex;
@@ -16,7 +16,7 @@ export const Container = styled.div`
 
 export const Grafico = styled.div<{economizar: number}>` 
   width: 100%;
-  background: ${({theme}) => theme.gray2};
+  background: ${({ theme }) => theme.gray2};
   height: 24px;
   margin: 16px 0;
   border-radius: 8px;
@@ -39,6 +39,6 @@ export const Gastos = styled.div<{gasto: number, economizar: number}>`
   align-items: center;
 
   background: ${props => props.gasto < (100 - props.economizar) ? props.theme.green : props.theme.red};
-  color: ${({theme}) => theme.white};
+  color: ${({ theme }) => theme.white};
   border-radius: 8px;
 `

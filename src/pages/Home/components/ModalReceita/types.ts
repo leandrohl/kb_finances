@@ -5,7 +5,6 @@ export interface IModalReceitaProps {
   modeEdition: boolean;
 }
 
-
 export enum CategoryReceita {
   Salario = 0,
   Presente = 1,
@@ -14,8 +13,9 @@ export enum CategoryReceita {
 
 export class ReceitaInfo {
   description = ''
-	value = 0
-	category = 0
-	email = ''
-	receipt_date = ''
+  value = 0
+  category = 0
+  email = ''
+  // eslint-disable-next-line camelcase
+  receipt_date = ''
 }

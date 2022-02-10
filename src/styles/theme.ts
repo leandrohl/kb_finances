@@ -15,11 +15,11 @@ export const pallet = {
   purple: '#722372',
   shadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px',
   shadow2: 'rgba(0, 0, 0, 0.10) 0px 1px 4px',
-  shadow3: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
-};
+  shadow3: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px'
+}
 
 const Theme = () => (
   pallet
-);
+)
 
-export default Theme;
+export default Theme

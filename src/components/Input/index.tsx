@@ -1,8 +1,8 @@
 /* eslint-disable react/require-default-props */
-import React, { InputHTMLAttributes, useState } from 'react';
+import React, { InputHTMLAttributes, useState } from 'react'
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 
-import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
-import * as S from './styles';
+import * as S from './styles'
 
 interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string,
@@ -15,15 +15,15 @@ interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
 const Input: React.FC<IInputProps> = (props: IInputProps) => {
   const {
     name, label, value, onChange, type, error, labelError, required, min, max, percent
-  } = props;
+  } = props
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
 
-  const renderTypePassword = showPassword ? 'text' : 'password';
+  const renderTypePassword = showPassword ? 'text' : 'password'
 
   const renderPasswordIcon = !showPassword
     ? <AiOutlineEye onClick={() => setShowPassword(true)} />
-    : <AiOutlineEyeInvisible onClick={() => setShowPassword(false)} />;
+    : <AiOutlineEyeInvisible onClick={() => setShowPassword(false)} />
 
   return (
     <S.Container>
@@ -46,14 +46,14 @@ const Input: React.FC<IInputProps> = (props: IInputProps) => {
         {percent && <span> % </span>}
       </S.ContainerInput>
       {error && (
-      <span>
-        {' '}
-        { labelError }
-        {' '}
-      </span>
+        <span>
+          {' '}
+          { labelError }
+          {' '}
+        </span>
       )}
     </S.Container>
-  );
-};
+  )
+}
 
-export default Input;
+export default Input

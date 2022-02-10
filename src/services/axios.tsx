@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios'
 
 // const headers = {
 //   'Content-Type': 'application/json',
@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const apiConfig = axios.create({
   baseURL: 'https://kbfinances.herokuapp.com/'
-});
+})
 
 // apiConfig.interceptors.request.use(async (config) => {
 //   const token = getToken();
@@ -17,4 +17,4 @@ const apiConfig = axios.create({
 //   return config;
 // });
 
-export default apiConfig;
+export default apiConfig

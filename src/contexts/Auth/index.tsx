@@ -1,24 +1,25 @@
 /* eslint-disable arrow-body-style */
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { AuthContextData, DataState, IUser } from './types';
-import StorageLocal from '../../utils/StorageLocal'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
-export const AuthContext = createContext({} as AuthContextData);
+import StorageLocal from '../../utils/StorageLocal'
+import { AuthContextData, DataState, IUser } from './types'
+
+export const AuthContext = createContext({} as AuthContextData)
 
 export const AuthProvider: React.FC = ({ children }) => {
   const storageLocal = new StorageLocal()
 
   const USER_GET = '@kb_finances'
 
-  const [user, setUser] = useState<DataState>({} as DataState);
+  const [user, setUser] = useState<DataState>({} as DataState)
 
   useEffect(() => {
     const user = getUserSession()
-    
+
     if (user) {
       setUser({
         user,
-        signed: true,
+        signed: true
       })
     }
   }, [])
@@ -33,7 +34,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     })
   }
 
-  const getUserSession = (): IUser | null =>  {
+  const getUserSession = (): IUser | null => {
     const session = storageLocal.getLocalStorage<IUser>(USER_GET)
     if (session) {
       return session
@@ -42,15 +43,15 @@ export const AuthProvider: React.FC = ({ children }) => {
   }
 
   const signIn = (user: IUser) => {
-    storageLocal.setLocalStorage(USER_GET, user )
-    setUser({user, signed: true});
-  };
+    storageLocal.setLocalStorage(USER_GET, user)
+    setUser({ user, signed: true })
+  }
 
   const signOut = () => {
-    setUser({} as DataState);
+    setUser({} as DataState)
     storageLocal.cleanLocalStorage()
     window.location.replace('/login')
-  };
+  }
 
   return (
     <AuthContext.Provider value={{
@@ -62,10 +63,10 @@ export const AuthProvider: React.FC = ({ children }) => {
     >
       { children }
     </AuthContext.Provider>
-  );
-};
+  )
+}
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
-  return context;
-};
+  const context = useContext(AuthContext)
+  return context
+}

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 
 export interface IModalDespesaProps {
   close: () => void;
@@ -14,8 +15,8 @@ export enum CategoryDespesa {
 
 export class DespesaInfo {
   category = 0;
-  description = "";
-  due_date = "";
+  description = '';
+  due_date = '';
   payment_date = '';
   value = 0;
   email = '';

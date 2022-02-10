@@ -2,7 +2,6 @@
 import React from 'react'
 import { ToastContent } from 'react-toastify'
 
-
 import { IToastProps } from './types'
 
 const ToastTypes = (params: IToastProps): ToastContent => {

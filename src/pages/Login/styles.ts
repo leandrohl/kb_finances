@@ -1,5 +1,5 @@
 /* eslint-disable arrow-body-style */
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const Container = styled.div(({ theme }) => `
   display: flex;
@@ -9,7 +9,7 @@ export const Container = styled.div(({ theme }) => `
   padding: 10px;
   width: 100%;
   height: 100%;
-`);
+`)
 
 export const Logo = styled.div(({ theme }) => `
   display: flex;
@@ -24,7 +24,7 @@ export const Logo = styled.div(({ theme }) => `
     padding-left: 4px;
     font-size: 18px;
   }
-`);
+`)
 
 export const Form = styled.form(({ theme }) => `
    padding: 32px 65px;
@@ -51,4 +51,4 @@ export const Form = styled.form(({ theme }) => `
        width: 100%;
        padding: 10px 35px 40px;
    }
-`);
+`)

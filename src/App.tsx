@@ -1,24 +1,26 @@
-import React from 'react';
-import { ThemeProvider } from 'styled-components';
-import { AuthProvider } from './contexts/Auth';
-import { MonetaryProvider } from './contexts/Monetary';
-import Routes from './routes';
-import GlobalStyle from './styles/global';
-import Theme from './styles/theme';
-import ToastNotificationContainer from './components/ToastNotification/ToastNotificationContainer'
+import React from 'react'
 
-function App() {
+import { ThemeProvider } from 'styled-components'
+
+import ToastNotificationContainer from './components/ToastNotification/ToastNotificationContainer'
+import { AuthProvider } from './contexts/Auth'
+import { MonetaryProvider } from './contexts/Monetary'
+import Routes from './routes'
+import GlobalStyle from './styles/global'
+import Theme from './styles/theme'
+
+function App () {
   return (
     <AuthProvider>
-      <MonetaryProvider> 
+      <MonetaryProvider>
         <ThemeProvider theme={Theme}>
           <Routes />
           <ToastNotificationContainer />
           <GlobalStyle />
         </ThemeProvider>
-      </MonetaryProvider> 
+      </MonetaryProvider>
     </AuthProvider>
-  );
+  )
 }
 
-export default App;
+export default App

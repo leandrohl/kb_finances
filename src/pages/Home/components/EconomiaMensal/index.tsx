@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
+import { Chart } from 'react-google-charts'
 
-import * as S from './styles';
-import { Chart } from "react-google-charts";
-import Button from "../../../../components/Button";
-import Input from "../../../../components/Input";
-import { useMonetary } from "../../../../contexts/Monetary";
-import { useAuth } from "../../../../contexts/Auth";
-import api from '../../../../services/axios';
+import Button from '../../../../components/Button'
+import Input from '../../../../components/Input'
 import ToastNotification from '../../../../components/ToastNotification'
+import { useAuth } from '../../../../contexts/Auth'
+import { useMonetary } from '../../../../contexts/Monetary'
+import api from '../../../../services/axios'
+import * as S from './styles'
 
 const EconomiaMensal: React.FC = () => {
   const { userLogged: { user }, updateEconomy } = useAuth()
-  const {receitaInfo, despesaInfo} = useMonetary()
+  const { receitaInfo, despesaInfo } = useMonetary()
   const [registro, setRegistro] = useState(0)
 
   const [economizarPorcentagem, setEconomizarPorcentagem] = useState(0)
@@ -20,9 +20,26 @@ const EconomiaMensal: React.FC = () => {
   const economizarValor = receitaInfo - (receitaInfo * economizarPorcentagem) / 100
 
   useEffect(() => {
-    setEconomizarPorcentagem(user.economy)
-    setRegistro(user.economy)
+    buscarEconomiaPrevista()
   }, [])
+
+  const buscarEconomiaPrevista = async () => {
+    try {
+      const req = {
+        email: user.email,
+        month: 2,
+        year: 2022
+      }
+      const response = await api.post('/route/kakeibo.php?operation=get_economy', req)
+
+      if (response) {
+        setEconomizarPorcentagem(response.data)
+        updateEconomy(response.data)
+      }
+    } catch {
+
+    }
+  }
 
   const salvarEconomiaPrevista = async () => {
     try {
@@ -38,7 +55,7 @@ const EconomiaMensal: React.FC = () => {
         setEconomizarPorcentagem(registro)
         updateEconomy(registro)
         ToastNotification({
-          id: `error`,
+          id: 'error',
           content: 'Economia mensal atualizada com sucesso'
         })
       }
@@ -51,12 +68,12 @@ const EconomiaMensal: React.FC = () => {
     <div>
       <S.Grafico economizar={economizarPorcentagem}>
         <span>R$ {economizarValor}</span>
-        <S.Gastos gasto={gastoPercent} economizar={economizarPorcentagem}  >
+        <S.Gastos gasto={gastoPercent} economizar={economizarPorcentagem} >
           R$ { despesaInfo.toFixed(2) }
         </S.Gastos>
       </S.Grafico>
       <S.Container>
-        <Input 
+        <Input
           label="Quanto você deseja economizar (em porcentagem) ? "
           name="economizar"
           value={registro}
@@ -70,14 +87,14 @@ const EconomiaMensal: React.FC = () => {
           min={0}
           max={100}
         />
-        <Button 
+        <Button
           text="Salvar"
           onClick={salvarEconomiaPrevista}
-         />
+        />
       </S.Container>
 
     </div>
-  );
-};
+  )
+}
 
-export default EconomiaMensal;
+export default EconomiaMensal

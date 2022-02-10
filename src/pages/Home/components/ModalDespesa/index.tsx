@@ -1,31 +1,28 @@
-import { SyntheticEvent, useEffect, useState } from 'react';
+import React, { SyntheticEvent, useEffect, useState } from 'react'
 
+import Button from '../../../../components/Button'
+import Input from '../../../../components/Input'
+import Modal from '../../../../components/Modal'
+import Select from '../../../../components/Select'
+import ToastNotification from '../../../../components/ToastNotification'
+import { useAuth } from '../../../../contexts/Auth'
+import { useMonetary } from '../../../../contexts/Monetary'
+import api from '../../../../services/axios'
 import {
-  Container,
-  ContainerCard,
-  ContainerTitle,
   Form,
   ContainerInput,
   ContainerButton
 } from './styles'
-
-import { useMonetary } from '../../../../contexts/Monetary';
-import { CategoryDespesa, IModalDespesaProps } from './types';
-import { DespesaInfo } from './types';
-import api from '../../../../services/axios'
-import Button from '../../../../components/Button';
-import { useAuth } from '../../../../contexts/Auth';
-import Input from '../../../../components/Input';
-import Select from '../../../../components/Select';
-import ToastNotification from '../../../../components/ToastNotification';
+import { DespesaInfo } from './types'
+import { CategoryDespesa, IModalDespesaProps } from './types'
 
 const ModalDespesa = (props: IModalDespesaProps) => {
-  const { close, id, modeEdition } = props;
+  const { close, id, modeEdition } = props
 
   const { adicionarDespesa, editarDespesa } = useMonetary()
   const { userLogged } = useAuth()
 
-  const [registration, setRegistration] = useState<DespesaInfo>(new DespesaInfo());
+  const [registration, setRegistration] = useState<DespesaInfo>(new DespesaInfo())
   const [loading, setLoading] = useState(false)
 
   // useEffect(() => {
@@ -40,8 +37,8 @@ const ModalDespesa = (props: IModalDespesaProps) => {
         id: id,
         email: 'gabriel@email.com'
       }
-      const response = await api.post('/route/expense.php?operation=f', req);
-      if(response) {
+      const response = await api.post('/route/expense.php?operation=f', req)
+      if (response) {
         setRegistration(response.data[0])
       }
     } catch {
@@ -56,7 +53,7 @@ const ModalDespesa = (props: IModalDespesaProps) => {
   }, [modeEdition])
 
   const addDespesa = async (e: SyntheticEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     setLoading(true)
 
     try {
@@ -64,16 +61,16 @@ const ModalDespesa = (props: IModalDespesaProps) => {
         ...registration,
         email: 'gabriel@email.com'
       }
-      
-      const response = await api.post('/route/expense.php?operation=c', req);
 
-      if(response.status) {
-        adicionarDespesa({...registration, id: response.data.id});
+      const response = await api.post('/route/expense.php?operation=c', req)
+
+      if (response.status) {
+        adicionarDespesa({ ...registration, id: response.data.id })
         ToastNotification({
           id: `error-${id}`,
           content: 'Despesa adicionada com sucesso'
         })
-        close();
+        close()
       }
     } catch {
 
@@ -82,7 +79,7 @@ const ModalDespesa = (props: IModalDespesaProps) => {
   }
 
   const editDespesa = async (e: SyntheticEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     setLoading(true)
 
     if (id) {
@@ -92,92 +89,93 @@ const ModalDespesa = (props: IModalDespesaProps) => {
           id,
           email: 'gabriel@email.com'
         }
-        
-        const response = await api.post('/route/expense.php?operation=u', req);
-  
-        if(response.status) {
-          editarDespesa(req);
-          close();
+
+        const response = await api.post('/route/expense.php?operation=u', req)
+
+        if (response.status) {
+          editarDespesa(req)
+          close()
         }
       } catch {
-  
+
       }
     }
-    
+
     setLoading(false)
   }
 
   const onEnterDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
     if (event.key === 'Enter') {
-      if (modeEdition) editDespesa(event) 
+      if (modeEdition) editDespesa(event)
       else addDespesa(event)
     }
   }
 
   return (
-    <Container>
-      <ContainerCard>
-        <ContainerTitle>
-          <span>{modeEdition ? 'Editar' : 'Adicionar'} Despesa</span>
-        </ContainerTitle>
-        <Form onSubmit={(e) => modeEdition ? editDespesa(e) : addDespesa(e)} onKeyPress={onEnterDown}>
-          <ContainerInput>
-            <Input
-              label="Descrição: "
-              name="description"
-              type="text"
-              value={registration.description}
-              onChange={(e) => setRegistration({...registration, description: e.target.value})}
-            />
-          </ContainerInput>
-          <ContainerInput>
-            <Input
-              label="Custo: "
-              name="value"
-              type="text"
-              value={registration.value}
-              onChange={(e) => setRegistration({...registration, value: Number(e.target.value)})}
-            />
-          </ContainerInput>
-          <ContainerInput>
-            <Select 
+    <Modal
+      closeModal={close}
+      title={modeEdition ? 'Editar Despesa' : 'Adicionar Despesa'}
+    >
+      <Form onSubmit={(e) => modeEdition ? editDespesa(e) : addDespesa(e)} onKeyPress={onEnterDown}>
+        <ContainerInput>
+          <Input
+            label="Descrição: "
+            name="description"
+            type="text"
+            value={registration.description}
+            onChange={(e) => setRegistration({ ...registration, description: e.target.value })}
+          />
+        </ContainerInput>
+        <ContainerInput>
+          <Input
+            label="Custo (em R$): "
+            name="value"
+            type="text"
+            value={registration.value}
+            onChange={(e) => {
+              const value = Number(e.target.value)
+              if (value) setRegistration({ ...registration, value: value })
+            }
+            }
+          />
+        </ContainerInput>
+        <ContainerInput>
+          <Select
             label="Categoria"
-            value={registration.category} 
-            onChange={(e) => setRegistration({...registration, category: Number(e.target.value)})}
-            >
-              <option value={CategoryDespesa.Sobrevivência}>Sobrevivência</option>
-              <option value={CategoryDespesa.Cultura}>Cultura</option>
-              <option value={CategoryDespesa.ExtraImprevisto}>Extra/Imprevisto</option>
-              <option value={CategoryDespesa.Opcionais}>Opcionais</option>
-            </Select>
-          </ContainerInput>
-          <ContainerInput>
-            <Input
-              label="Data de Pagamento: "
-              name="payment_date"
-              type="date"
-              value={registration.payment_date}
-              onChange={(e) => setRegistration({...registration, payment_date: e.target.value})}
-            />
-          </ContainerInput>
-          <ContainerInput>
-            <Input
-              label="Data de Vencimento: "
-              name="due_date"
-              type="date"
-              value={registration.due_date}
-              onChange={(e) => setRegistration({...registration, due_date: e.target.value})}
-            />
-          </ContainerInput>
-          <ContainerButton>
-            <Button loading={loading} text={modeEdition ? 'Editar' : 'Adicionar'}/>
-          </ContainerButton>
-        </Form>
-        
-      <Button onClick={close} text="Cancelar"/>
-      </ContainerCard>
-    </Container>
+            value={registration.category}
+            onChange={(e) => setRegistration({ ...registration, category: Number(e.target.value) })}
+          >
+            <option value={CategoryDespesa.Sobrevivência}>Sobrevivência</option>
+            <option value={CategoryDespesa.Cultura}>Cultura</option>
+            <option value={CategoryDespesa.ExtraImprevisto}>Extra/Imprevisto</option>
+            <option value={CategoryDespesa.Opcionais}>Opcionais</option>
+          </Select>
+        </ContainerInput>
+        <ContainerInput>
+          <Input
+            label="Data de Pagamento: "
+            name="payment_date"
+            type="date"
+            value={registration.payment_date}
+            onChange={(e) => setRegistration({ ...registration, payment_date: e.target.value })}
+          />
+        </ContainerInput>
+        <ContainerInput>
+          <Input
+            label="Data de Vencimento: "
+            name="due_date"
+            type="date"
+            value={registration.due_date}
+            onChange={(e) => setRegistration({ ...registration, due_date: e.target.value })}
+          />
+        </ContainerInput>
+        <ContainerButton>
+          <Button onClick={close} text="Cancelar" color="#b5b5b5"/>
+          <Button loading={loading} text={modeEdition ? 'Editar' : 'Adicionar'}/>
+        </ContainerButton>
+      </Form>
+    </Modal>
   )
 }
 
-export default ModalDespesa;
+export default ModalDespesa

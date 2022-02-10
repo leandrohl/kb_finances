@@ -1,30 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import * as S from './styles';
+import React, { useEffect, useState } from 'react'
 
-import { useMonetary } from '../../contexts/Monetary';
-import Header from './components/Header';
-import ModalReceita from '././components/ModalReceita'
-import ModalDespesa from './components/ModalDespesa'
-import DespesaCategoria from './components/DespesaCategoria'
+import { MdModeEdit, MdDelete } from 'react-icons/md'
 import ToastNotification from '../../components/ToastNotification'
-
-import api from '../../services/axios';
-import { CategoryReceita } from './components/ModalReceita/types';
-import { CategoryDespesa } from './components/ModalDespesa/types';
-
-import { MdModeEdit, MdDelete } from 'react-icons/md';
-import { DespesaInfo, ReceitaInfo } from '../../contexts/Monetary/types';
-import EconomiaMensal from './components/EconomiaMensal';
-import { useAuth } from '../../contexts/Auth';
+import EconomiaMensal from './components/EconomiaMensal'
+import { useAuth } from '../../contexts/Auth'
+import { useMonetary } from '../../contexts/Monetary'
+import { DespesaInfo, ReceitaInfo } from '../../contexts/Monetary/types'
+import api from '../../services/axios'
+import ModalReceita from '././components/ModalReceita'
+import ComoMelhorarEconomia from './components/ComoMelhorarEconomia'
+import DespesaCategoria from './components/DespesaCategoria'
+import Header from './components/Header'
+import ModalDespesa from './components/ModalDespesa'
+import { CategoryDespesa } from './components/ModalDespesa/types'
+import { CategoryReceita } from './components/ModalReceita/types'
+import * as S from './styles'
 
 const Home: React.FC = () => {
   const { userLogged: { user } } = useAuth()
-  const { despesas, receitas, adicionarReceitas, adicionarDespesas, excluirReceita, excluirDespesa } = useMonetary();
+  const { despesas, receitas, adicionarReceitas, adicionarDespesas, excluirReceita, excluirDespesa } = useMonetary()
 
-  const [openModalReceita, setOpenModalReceita] = useState(false);
-  const [openModalDespesa, setOpenModalDespesa] = useState(false);
+  const [openModalReceita, setOpenModalReceita] = useState(false)
+  const [openModalDespesa, setOpenModalDespesa] = useState(false)
 
-  const [modeEdicao, setModoEdicao] = useState(false);
+  const [modeEdicao, setModoEdicao] = useState(false)
   const [movimentacaoSelectId, setMovimentacaoSelectId] = useState(-1)
 
   const buscarDespesas = async () => {
@@ -32,8 +31,8 @@ const Home: React.FC = () => {
       const req = {
         email: user.email
       }
-      const response = await api.post('/route/expense.php?operation=r', req);
-      if(response) {
+      const response = await api.post('/route/expense.php?operation=r', req)
+      if (response) {
         adicionarDespesas(response.data)
       }
     } catch {
@@ -47,15 +46,15 @@ const Home: React.FC = () => {
         email: user.email
       }
 
-      const response = await api.post('/route/income.php?operation=r', req);
-      if(response) {
+      const response = await api.post('/route/income.php?operation=r', req)
+      if (response) {
         adicionarReceitas(response.data)
       }
     } catch {
 
     }
   }
-  
+
   useEffect(() => {
     buscarReceitas()
     buscarDespesas()
@@ -65,10 +64,10 @@ const Home: React.FC = () => {
     try {
       const { id } = receita
 
-      const response = await api.post('/route/income.php?operation=d', { id });
+      const response = await api.post('/route/income.php?operation=d', { id })
 
-      if(response.status) {
-        excluirReceita(id);
+      if (response.status) {
+        excluirReceita(id)
         ToastNotification({
           id: `error-${id}`,
           content: 'Receita removida com sucesso'
@@ -83,10 +82,10 @@ const Home: React.FC = () => {
     try {
       const { id } = despesa
 
-      const response = await api.post('/route/expense.php?operation=d', { id });
+      const response = await api.post('/route/expense.php?operation=d', { id })
 
-      if(response.status) {
-        excluirDespesa(id);
+      if (response.status) {
+        excluirDespesa(id)
         ToastNotification({
           id: `error-${id}`,
           content: 'Despesa removida com sucesso'
@@ -97,59 +96,58 @@ const Home: React.FC = () => {
     }
   }
 
-
   const closeModalReceita = () => {
-    setOpenModalReceita(false);
-  };
+    setOpenModalReceita(false)
+  }
 
   const closeModalDespesa = () => {
-    setOpenModalDespesa(false);
-  };
+    setOpenModalDespesa(false)
+  }
 
   const renderDespesas = () => (
     despesas.map((despesa, index) => (
       <S.ContainerMovimentacao key={index}>
-        <div style={{display: 'flex', flexDirection: 'column', width: '100px'}}>
+        <div style={{ display: 'flex', flexDirection: 'column', width: '100px' }}>
           <span>{despesa.description}</span>
           <S.Category color="#D86161">{CategoryDespesa[despesa.category]}</S.Category>
         </div>
         <span>R$ {Number(despesa.value).toFixed(2)}</span>
-        <div style={{display: 'flex', cursor: 'pointer'}}>
-          <MdModeEdit 
-            size={20} 
+        <div style={{ display: 'flex', cursor: 'pointer' }}>
+          <MdModeEdit
+            size={20}
             onClick={() => {
               setModoEdicao(true)
               setMovimentacaoSelectId(despesa.id)
               setOpenModalDespesa(true)
-          }} />
+            }} />
           <MdDelete size={20} onClick={() => removerDespesa(despesa)}/>
         </div>
       </S.ContainerMovimentacao>
     ))
-  );
+  )
 
   const renderReceitas = () => (
     receitas.map((receita, index) => (
       <S.ContainerMovimentacao key={index}>
-        <div style={{display: 'flex', flexDirection: 'column', width: '100px'}}>
+        <div style={{ display: 'flex', flexDirection: 'column', width: '100px' }}>
           <span>{receita.description}</span>
           <S.Category color="#73E07E">{CategoryReceita[receita.category]}</S.Category>
         </div>
         <span>R$ {Number(receita.value).toFixed(2)}</span>
-        <div style={{display: 'flex', cursor: 'pointer'}}>
-          <MdModeEdit 
-          size={20} 
-          onClick={() => {
-            setModoEdicao(true)
-            setMovimentacaoSelectId(receita.id)
-            setOpenModalReceita(true)
-          }}
+        <div style={{ display: 'flex', cursor: 'pointer' }}>
+          <MdModeEdit
+            size={20}
+            onClick={() => {
+              setModoEdicao(true)
+              setMovimentacaoSelectId(receita.id)
+              setOpenModalReceita(true)
+            }}
           />
           <MdDelete size={20} onClick={() => removerReceita(receita)}/>
         </div>
       </S.ContainerMovimentacao>
     ))
-  );
+  )
 
   return (
     <S.Container>
@@ -194,13 +192,13 @@ const Home: React.FC = () => {
         </S.CardHorizontal>
         <S.CardHorizontal>
           <h3>Como melhoria minha economia</h3>
-          {/* <MelhorarEconomia /> */}
+          <ComoMelhorarEconomia />
         </S.CardHorizontal>
       </S.BodyContainer>
       {openModalReceita && <ModalReceita close={closeModalReceita} id={movimentacaoSelectId} modeEdition={modeEdicao}/>}
       {openModalDespesa && <ModalDespesa close={closeModalDespesa} id={movimentacaoSelectId} modeEdition={modeEdicao} />}
     </S.Container>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

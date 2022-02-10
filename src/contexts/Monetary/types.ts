@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 export interface MonetaryContextData {
   // eslint-disable-next-line no-unused-vars
   adicionarDespesa: (despesa: DespesaInfo) => void,
@@ -6,8 +7,8 @@ export interface MonetaryContextData {
   adicionarReceitas: (receitaInfo: ReceitaInfo[]) => void,
   editarReceita: (receitaEditada: ReceitaInfo) => void,
   editarDespesa: (despesaEditada: DespesaInfo) => void,
-  excluirReceita: (id: number) => void, 
-  excluirDespesa: (id: number) => void, 
+  excluirReceita: (id: number) => void,
+  excluirDespesa: (id: number) => void,
   receitas: ReceitaInfo[],
   despesas: DespesaInfo[],
   movimentacaoInfo: MovimentacaoInfo,
@@ -24,8 +25,8 @@ export class MovimentacaoInfo {
 export class DespesaInfo {
   id = 0
   category = 0;
-  description = "";
-  due_date = "";
+  description = '';
+  due_date = '';
   payment_date = '';
   value = 0;
   email = '';
@@ -34,9 +35,8 @@ export class DespesaInfo {
 export class ReceitaInfo {
   id = 0
   description = ''
-	value = 0
-	category = 0
-	email = ''
-	receipt_date = ''
+  value = 0
+  category = 0
+  email = ''
+  receipt_date = ''
 }
-

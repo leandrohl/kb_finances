@@ -1,42 +1,44 @@
-import React, { SyntheticEvent, useEffect, useState } from 'react';
-import { RiMoneyDollarBoxLine } from 'react-icons/ri';
-import Button from '../../components/Button';
-import Input from '../../components/Input';
-import { Registrations, RegistrationsErrors } from './types';
-import * as S from './styles';
-import api from '../../services/axios';
-import { useAuth } from '../../contexts/Auth';
-import { Redirect } from 'react-router-dom';
-import { IUser } from '../../contexts/Auth/types';
+import React, { SyntheticEvent, useEffect, useState } from 'react'
+import { RiMoneyDollarBoxLine } from 'react-icons/ri'
+import { Redirect } from 'react-router-dom'
+
+import Button from '../../components/Button'
+import Input from '../../components/Input'
+import { useAuth } from '../../contexts/Auth'
+import { IUser } from '../../contexts/Auth/types'
+import api from '../../services/axios'
+import * as S from './styles'
+import { Registrations, RegistrationsErrors } from './types'
 
 const Login: React.FC = () => {
-  const [registration, setRegistration] = useState<Registrations>(new Registrations());
-  const [registrationError, setRegistrationError] = useState<RegistrationsErrors>(new RegistrationsErrors());
-  const [loading, setLoading] = useState(false);
+  const [registration, setRegistration] = useState<Registrations>(new Registrations())
+  const [registrationError, setRegistrationError] = useState<RegistrationsErrors>(new RegistrationsErrors())
+  const [loading, setLoading] = useState(false)
   const { signIn, userLogged } = useAuth()
 
   const validateRequiredFields = (requiredFields: object) => {
-    const fieldsArr = Object.keys(requiredFields);
-    let errors = {...registrationError}
+    const fieldsArr = Object.keys(requiredFields)
+    const errors = { ...registrationError }
 
     fieldsArr.forEach((field) => {
       if (!requiredFields) {
         setRegistrationError({
           ...errors,
-          [field]: 'Esse campo é de preenchimento obrigatório',
+          [field]: 'Esse campo é de preenchimento obrigatório'
         })
-    }});
+      }
+    })
     // setRegistrationError(errors)
-  };
+  }
 
   const handleSubmit = async (e: SyntheticEvent) => {
-    e.preventDefault();
-    setLoading(true);
+    e.preventDefault()
+    setLoading(true)
 
     if (!registration.email || !registration.password) validateRequiredFields(registrationError)
     else {
       try {
-        const response = await api.post<IUser>('/route/login.php', registration);
+        const response = await api.post<IUser>('/route/login.php', registration)
 
         if (response.status) {
           const user = {
@@ -44,26 +46,23 @@ const Login: React.FC = () => {
             email: registration.email,
             password: registration.password
           }
-          signIn(user);
+          signIn(user)
         }
       } catch (e: any) {
-
         if (e.property === 'email') {
           setRegistrationError({ ...registrationError, email: e.message })
         } else if (e.property === 'password') {
           setRegistrationError({ ...registrationError, password: e.message })
-        } else {
-
         }
       }
     }
 
-    setLoading(false);
-  };
+    setLoading(false)
+  }
 
   useEffect(() => {
-    setLoading(false);
-  }, []);
+    setLoading(false)
+  }, [])
 
   const onEnterDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
     if (event.key === 'Enter') {
@@ -112,7 +111,7 @@ const Login: React.FC = () => {
         </S.Form>
       </S.Container>
     </>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

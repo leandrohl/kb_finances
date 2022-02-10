@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 
 // import { Container } from './styles';
-import { Chart } from "react-google-charts";
-import { useMonetary } from '../../../../contexts/Monetary';
+import { Chart } from 'react-google-charts'
+
+import { useMonetary } from '../../../../contexts/Monetary'
 import api from '../../../../services/axios'
 
 const DespesaCategoria: React.FC = () => {
@@ -16,14 +17,14 @@ const DespesaCategoria: React.FC = () => {
       fontSize: 10
     },
     colors: ['#c6d8f0', '#d8bfd8', '#ffb394', '#ccff99'],
-    fontName: 'Montserrat',
+    fontName: 'Montserrat'
   })
   const [data, setData] = useState([
     ['Categoria', 'Valor'],
     ['Sobrevivencia', ''],
     ['Cultura', ''],
     ['Extra/Imprevisto', ''],
-    ['Opcionais', ''],
+    ['Opcionais', '']
   ])
 
   // useEffect(() => {
@@ -32,7 +33,7 @@ const DespesaCategoria: React.FC = () => {
   //       case 0: []
   //       case 1:
   //       case 2:
-  //       case 3: 
+  //       case 3:
   //     }
   //   })
   // }, [despesas])
@@ -43,7 +44,7 @@ const DespesaCategoria: React.FC = () => {
         email: 'gabriel@email.com'
       }
 
-      const response = await api.post('/route/expense.php?operation=pc', req);
+      const response = await api.post('/route/expense.php?operation=pc', req)
       if (response) {
         setData([
           ['Categoria', 'Valor'],
@@ -71,7 +72,7 @@ const DespesaCategoria: React.FC = () => {
         options={options}
       />
     </div>
-  );
+  )
 }
 
-export default DespesaCategoria;
+export default DespesaCategoria

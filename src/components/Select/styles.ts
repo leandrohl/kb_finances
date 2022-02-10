@@ -1,15 +1,15 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-`;
+`
 
 export const Label = styled.label(({ color, theme }) => `
   padding-bottom: 8px;
   font-size: 14px;
   color: ${theme.black};
-`);
+`)
 
 export const Select = styled.select(({ theme, disabled }) => `
   padding: 14px 16px;
@@ -22,7 +22,7 @@ export const Select = styled.select(({ theme, disabled }) => `
   > option {
     padding: 16px;
   }
-`);
+`)
 
 export const Option = styled.option`
-`;
+`

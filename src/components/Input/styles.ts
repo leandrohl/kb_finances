@@ -1,5 +1,5 @@
 /* eslint-disable arrow-body-style */
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const Container = styled.div(({ theme }) => `
   display: flex;
@@ -16,7 +16,7 @@ export const Container = styled.div(({ theme }) => `
     color: ${theme.red};
     margin-top: 4px;
   }
-`);
+`)
 
 export const ContainerInput = styled.div(({ theme }) => `
   position: relative;
@@ -50,10 +50,10 @@ export const ContainerInput = styled.div(({ theme }) => `
      padding-left: 8px;
      font-size: 20px;
    }
-`);
+`)
 
 export const Input = styled.input(({
-  theme, type, disabled,
+  theme, type, disabled
 }) => `
    padding: 14px 10px;
    width: 100%;
@@ -65,4 +65,4 @@ export const Input = styled.input(({
    ::placeholder {
      color: ${theme.gray3};
    }
-`);
+`)
