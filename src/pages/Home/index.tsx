@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
-import Loading from '../../components/Loading'
 import ToastNotification from '../../components/ToastNotification'
 import { useAuth } from '../../contexts/Auth'
 import { useMonetary } from '../../contexts/Monetary'
@@ -15,10 +14,8 @@ import * as S from './styles'
 const Home: React.FC = () => {
   const { adicionarReceitas, adicionarDespesas, despesas } = useMonetary()
   const { userLogged: { user } } = useAuth()
-  const [loading, setLoading] = useState(false)
 
   const buscarDespesas = async () => {
-    setLoading(true)
     try {
       const req = {
         email: user.email
@@ -51,7 +48,6 @@ const Home: React.FC = () => {
         content: 'Não foi possível buscas as receitas'
       })
     }
-    setLoading(false)
   }
 
   useEffect(() => {

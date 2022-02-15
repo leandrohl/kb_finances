@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { MdModeEdit, MdDelete } from 'react-icons/md'
 
 import ToastNotification from '../../../../components/ToastNotification'
-import { useAuth } from '../../../../contexts/Auth'
 import { useMonetary } from '../../../../contexts/Monetary'
 import { DespesaInfo, ReceitaInfo } from '../../../../contexts/Monetary/types'
 import api from '../../../../services/axios'

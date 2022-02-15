@@ -76,6 +76,7 @@ const ModalReceita = (props: IModalReceitaProps) => {
 
     try {
       const req = {
+        email: user.email,
         category: nomeCategoria
       }
 
@@ -108,8 +109,6 @@ const ModalReceita = (props: IModalReceitaProps) => {
       }
     })
 
-    // console.log(keys)
-
     setRegistration({ ...registration, error })
   }
 
@@ -119,23 +118,23 @@ const ModalReceita = (props: IModalReceitaProps) => {
 
     validarCampos(registration)
 
-    // try {
-    //   const req = {
-    //     ...registration,
-    //     email: user.email
-    //   }
+    try {
+      const req = {
+        ...registration,
+        email: user.email
+      }
 
-    //   const response = await api.post('/route/income.php?operation=c', req)
+      const response = await api.post('/route/income.php?operation=c', req)
 
-    //   if (response.status) {
-    //     adicionarReceita({ ...registration, id: response.data.id })
-    //     ToastNotification({
-    //       id: 'alert',
-    //       content: 'Receita adicionada com sucesso'
-    //     })
-    //     close()
-    //   }
-    // } catch {}
+      if (response.status) {
+        adicionarReceita({ ...registration, id: response.data.id })
+        ToastNotification({
+          id: 'alert',
+          content: 'Receita adicionada com sucesso'
+        })
+        close()
+      }
+    } catch {}
     setLoading(false)
   }
 
@@ -165,13 +164,6 @@ const ModalReceita = (props: IModalReceitaProps) => {
 
   const closeModalAdicionarCategoria = () => {
     setOpenModalAddCategoria(false)
-  }
-
-  const onEnterDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
-    if (event.key === 'Enter') {
-      if (modeEdition) editReceita(event)
-      else addReceita(event)
-    }
   }
 
   return (

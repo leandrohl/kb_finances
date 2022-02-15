@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
 
 import * as S from './styles'

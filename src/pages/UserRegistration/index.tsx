@@ -5,7 +5,6 @@ import { Link, useHistory } from 'react-router-dom'
 import Button from '../../components/Button'
 import Input from '../../components/Input'
 import ToastNotification from '../../components/ToastNotification'
-import { useAuth } from '../../contexts/Auth'
 import api from '../../services/axios'
 import * as S from './styles'
 import { RegisterInfo, RegisterError } from './types'
@@ -13,7 +12,6 @@ import { RegisterInfo, RegisterError } from './types'
 const UserRegistration: React.FC = () => {
   const [registration, setRegistration] = useState<RegisterInfo>(new RegisterInfo())
   const [loading, setLoading] = useState(false)
-  const { signIn, userLogged } = useAuth()
   const { replace } = useHistory()
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault()

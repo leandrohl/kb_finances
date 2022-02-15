@@ -5,7 +5,7 @@ import { ToastContent } from 'react-toastify'
 import { IToastProps } from './types'
 
 const ToastTypes = (params: IToastProps): ToastContent => {
-  const { content, iconFirst } = params
+  const { content } = params
   const toastCss = {
     display: 'flex',
     alignItems: 'center',

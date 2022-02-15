@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react'
-
 // import { Container } from './styles';
 import { Chart } from 'react-google-charts'
 
 import { useAuth } from '../../../../contexts/Auth'
-import { useMonetary } from '../../../../contexts/Monetary'
 import api from '../../../../services/axios'
 
 const DespesaCategoria: React.FC = () => {
   const { userLogged: { user } } = useAuth()
 
-  const [options, setOptions] = useState({
+  const [options] = useState({
     pieHole: 0.5,
     pieSliceTextStyle: {
       color: 'black',
@@ -27,17 +25,6 @@ const DespesaCategoria: React.FC = () => {
     ['Extra/Imprevisto', ''],
     ['Opcionais', '']
   ])
-
-  // useEffect(() => {
-  //   const teste = despesas.map(despesa => {
-  //     switch(despesa.category) {
-  //       case 0: []
-  //       case 1:
-  //       case 2:
-  //       case 3:
-  //     }
-  //   })
-  // }, [despesas])
 
   const buscarDespesaPorCategoria = async () => {
     try {

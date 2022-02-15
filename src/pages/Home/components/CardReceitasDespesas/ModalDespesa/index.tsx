@@ -24,7 +24,7 @@ const ModalDespesa = (props: IModalDespesaProps) => {
 
   const [registration, setRegistration] = useState<DespesaInfo>(new DespesaInfo())
   const [loading, setLoading] = useState(false)
-  const [categorias, setCategorias] = useState<ListItem[]>([
+  const [categorias] = useState<ListItem[]>([
     { key: 0, value: 'Sobrevivência' },
     { key: 1, value: 'Cultura' },
     { key: 2, value: 'Extra/Imprevisto' },
