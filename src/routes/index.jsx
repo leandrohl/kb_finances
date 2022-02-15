@@ -11,8 +11,9 @@ import UserRegistration from '../pages/UserRegistration'
 
 // eslint-disable-next-line react/prop-types
 function PrivateRoute ({ component: Component, ...rest }) {
-  const isAuth = () => localStorage.getItem(USER_GET) !== null
+  const isAuth = localStorage.getItem(USER_GET) !== null
 
+  console.log(isAuth)
   return (
     <Route {...rest} render={props => (
       isAuth
