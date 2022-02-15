@@ -1,6 +1,7 @@
 /* eslint-disable arrow-body-style */
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
+import { USER_GET } from '../../configs/constants'
 import StorageLocal from '../../utils/StorageLocal'
 import { AuthContextData, DataState, IUser } from './types'
 
@@ -8,8 +9,6 @@ export const AuthContext = createContext({} as AuthContextData)
 
 export const AuthProvider: React.FC = ({ children }) => {
   const storageLocal = new StorageLocal()
-
-  const USER_GET = '@kb_finances'
 
   const [user, setUser] = useState<DataState>({} as DataState)
 

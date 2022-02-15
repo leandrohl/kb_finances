@@ -4,21 +4,21 @@ import {
   BrowserRouter, Switch, Route, Redirect
 } from 'react-router-dom'
 
-import { useAuth } from '../contexts/Auth'
+import { USER_GET } from '../configs/constants'
 import Home from '../pages/Home'
 import Login from '../pages/Login'
 import UserRegistration from '../pages/UserRegistration'
 
 // eslint-disable-next-line react/prop-types
 function PrivateRoute ({ component: Component, ...rest }) {
-  const { userLogged } = useAuth()
-  const isAuth = userLogged.signed
+  const isAuth = () => localStorage.getItem(USER_GET) !== null
 
   return (
     <Route {...rest} render={props => (
       isAuth
         ? <Component {...props} />
-        : <Redirect to="/login" />
+        // eslint-disable-next-line react/prop-types
+        : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
     )} />
   )
 }
