@@ -1,35 +1,35 @@
 import React, { SyntheticEvent, useEffect, useState } from 'react'
 
-import Button from '../../../../components/Button'
-import Input from '../../../../components/Input'
-import Modal from '../../../../components/Modal'
-import Select from '../../../../components/Select'
-import ToastNotification from '../../../../components/ToastNotification'
-import { useAuth } from '../../../../contexts/Auth'
-import { useMonetary } from '../../../../contexts/Monetary'
-import api from '../../../../services/axios'
+import Button from '../../../../../components/Button'
+import Input from '../../../../../components/Input'
+import Modal from '../../../../../components/Modal'
+import Select, { ListItem } from '../../../../../components/Select'
+import ToastNotification from '../../../../../components/ToastNotification'
+import { useAuth } from '../../../../../contexts/Auth'
+import { useMonetary } from '../../../../../contexts/Monetary'
+import api from '../../../../../services/axios'
 import {
   Form,
   ContainerInput,
   ContainerButton
 } from './styles'
 import { DespesaInfo } from './types'
-import { CategoryDespesa, IModalDespesaProps } from './types'
+import { IModalDespesaProps } from './types'
 
 const ModalDespesa = (props: IModalDespesaProps) => {
   const { close, id, modeEdition } = props
 
   const { adicionarDespesa, editarDespesa } = useMonetary()
-  const { userLogged } = useAuth()
+  const { userLogged: { user } } = useAuth()
 
   const [registration, setRegistration] = useState<DespesaInfo>(new DespesaInfo())
   const [loading, setLoading] = useState(false)
-
-  // useEffect(() => {
-  //   if (custo !== '' && descricao !== '' && categoria !== '' && dataLancamento !== '' && dataRecebimento !== '') {
-  //     setCompletedInputs(true);
-  //   }
-  // }, [custo, descricao, categoria, dataLancamento, dataRecebimento])
+  const [categorias, setCategorias] = useState<ListItem[]>([
+    { key: 0, value: 'Sobrevivência' },
+    { key: 1, value: 'Cultura' },
+    { key: 2, value: 'Extra/Imprevisto' },
+    { key: 3, value: 'Opcionais' }
+  ])
 
   const buscarInfoDespesa = async () => {
     try {
@@ -59,7 +59,7 @@ const ModalDespesa = (props: IModalDespesaProps) => {
     try {
       const req: DespesaInfo = {
         ...registration,
-        email: 'gabriel@email.com'
+        email: user.email
       }
 
       const response = await api.post('/route/expense.php?operation=c', req)
@@ -124,6 +124,7 @@ const ModalDespesa = (props: IModalDespesaProps) => {
             type="text"
             value={registration.description}
             onChange={(e) => setRegistration({ ...registration, description: e.target.value })}
+            required
           />
         </ContainerInput>
         <ContainerInput>
@@ -137,6 +138,7 @@ const ModalDespesa = (props: IModalDespesaProps) => {
               if (value) setRegistration({ ...registration, value: value })
             }
             }
+            required
           />
         </ContainerInput>
         <ContainerInput>
@@ -144,12 +146,9 @@ const ModalDespesa = (props: IModalDespesaProps) => {
             label="Categoria"
             value={registration.category}
             onChange={(e) => setRegistration({ ...registration, category: Number(e.target.value) })}
-          >
-            <option value={CategoryDespesa.Sobrevivência}>Sobrevivência</option>
-            <option value={CategoryDespesa.Cultura}>Cultura</option>
-            <option value={CategoryDespesa.ExtraImprevisto}>Extra/Imprevisto</option>
-            <option value={CategoryDespesa.Opcionais}>Opcionais</option>
-          </Select>
+            listItems={categorias}
+            required
+          />
         </ContainerInput>
         <ContainerInput>
           <Input
@@ -158,6 +157,7 @@ const ModalDespesa = (props: IModalDespesaProps) => {
             type="date"
             value={registration.payment_date}
             onChange={(e) => setRegistration({ ...registration, payment_date: e.target.value })}
+            required
           />
         </ContainerInput>
         <ContainerInput>
@@ -167,6 +167,7 @@ const ModalDespesa = (props: IModalDespesaProps) => {
             type="date"
             value={registration.due_date}
             onChange={(e) => setRegistration({ ...registration, due_date: e.target.value })}
+            required
           />
         </ContainerInput>
         <ContainerButton>

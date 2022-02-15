@@ -11,15 +11,8 @@ export interface MonetaryContextData {
   excluirDespesa: (id: number) => void,
   receitas: ReceitaInfo[],
   despesas: DespesaInfo[],
-  movimentacaoInfo: MovimentacaoInfo,
   receitaInfo: number,
   despesaInfo: number
-}
-
-export class MovimentacaoInfo {
-  despesa = 0
-  receita = 0
-  total = 0
 }
 
 export class DespesaInfo {

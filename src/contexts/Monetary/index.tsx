@@ -1,35 +1,33 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
-import api from '../../services/axios'
-import { useAuth } from '../Auth'
-import { MonetaryContextData, DespesaInfo, ReceitaInfo, MovimentacaoInfo } from './types'
+import { MonetaryContextData, DespesaInfo, ReceitaInfo } from './types'
 
 export const MonetaryContext = createContext({} as MonetaryContextData)
 
 export const MonetaryProvider: React.FC = ({ children }) => {
   const [receitas, setReceitas] = useState<ReceitaInfo[]>([])
   const [despesas, setDespesas] = useState<DespesaInfo[]>([])
-  const [movimentacaoInfo, setMovimentacaoInfo] = useState<MovimentacaoInfo>(new MovimentacaoInfo())
   const [receitaInfo, setReceitaInfo] = useState(0)
   const [despesaInfo, setDespesaInfo] = useState(0)
 
-  // useEffect(() => {
-  //   setMovimentacaoInfo(receitaInfo - despesaInfo)
-  // }, [receitaInfo, despesaInfo])
+  useEffect(() => {
+    setReceitas([])
+    setDespesas([])
+  }, [])
 
   const adicionarReceitas = (receitasInfo: ReceitaInfo[]) => {
     setReceitas([...receitas, ...receitasInfo])
 
     const values = receitasInfo.map(receita => Number(receita.value))
 
-    setReceitaInfo(movimentacaoInfo.receita + values.reduce((t, n) => n + t, 0))
+    setReceitaInfo(receitaInfo + values.reduce((t, n) => n + t, 0))
   }
 
   const adicionarDespesas = (despesasInfo: DespesaInfo[]) => {
     setDespesas([...despesas, ...despesasInfo])
     const values = despesasInfo.map(despesa => Number(despesa.value))
 
-    setDespesaInfo(movimentacaoInfo.receita + values.reduce((t, n) => n + t, 0))
+    setDespesaInfo(despesaInfo + values.reduce((t, n) => n + t, 0))
   }
 
   const adicionarReceita = (receita: ReceitaInfo) => {
@@ -82,7 +80,6 @@ export const MonetaryProvider: React.FC = ({ children }) => {
       adicionarDespesas,
       receitas,
       despesas,
-      movimentacaoInfo,
       receitaInfo,
       despesaInfo,
       editarReceita,

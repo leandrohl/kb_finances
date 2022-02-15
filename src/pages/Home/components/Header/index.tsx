@@ -8,18 +8,19 @@ import { useMonetary } from '../../../../contexts/Monetary'
 import * as S from './styles'
 
 const Header: React.FC = () => {
-  const { signOut, userLogged } = useAuth()
-  const { movimentacaoInfo, receitaInfo, despesaInfo } = useMonetary()
+  const { signOut } = useAuth()
+  const { receitaInfo, despesaInfo } = useMonetary()
 
   return (
     <S.Container>
       <S.ContainerMenu>
-        <div></div>
+        <div>
+        </div>
         <S.Data>
           <IoIosArrowBack
             size={16}
           />
-        novembro
+          fevereiro
           <IoIosArrowForward
             size={16}
           />
@@ -47,7 +48,7 @@ const Header: React.FC = () => {
         </S.Info>
         <S.Info>
           <span>Despesas</span>
-          <h2>R$ {despesaInfo.toFixed(2)}</h2>
+          <h2>R$ {despesaInfo.toFixed(2)} </h2>
           <S.Icon color="#DD3A3A">
             <AiOutlineMinus
               size={24}

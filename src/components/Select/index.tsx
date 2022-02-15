@@ -3,19 +3,27 @@ import React, { SelectHTMLAttributes } from 'react'
 import * as S from './styles'
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  children: React.ReactNode;
   label: string;
+  listItems: ListItem[];
+  labelError?: string;
+  error?: boolean;
+}
+export interface ListItem {
+  key: number | string;
+  value: string;
 }
 
 // eslint-disable-next-line arrow-body-style
 const Select: React.FC<SelectProps> = (props: SelectProps) => {
   const {
-    children,
     label,
     required,
     onChange,
     value,
-    disabled
+    disabled,
+    error,
+    labelError,
+    listItems
   } = props
 
   return (
@@ -29,8 +37,19 @@ const Select: React.FC<SelectProps> = (props: SelectProps) => {
         value={value}
         onChange={onChange}
       >
-        {children}
+        {listItems.map(item => {
+          return (
+            <option key={item.key} value={item.key} >{item.value}</option>
+          )
+        })}
       </S.Select>
+      {error && (
+        <span>
+          {' '}
+          { labelError }
+          {' '}
+        </span>
+      )}
     </S.Container>
   )
 }

@@ -2,7 +2,6 @@ export interface AuthContextData {
   // eslint-disable-next-line no-unused-vars
   signIn: (user: IUser) => void,
   signOut: () => void,
-  updateEconomy: (newEconomy: number) => void;
   userLogged: DataState,
 }
 
@@ -12,6 +11,7 @@ export interface DataState {
 }
 
 export interface IUser {
+  name: string,
   email: string,
   password: string,
   balance: string,

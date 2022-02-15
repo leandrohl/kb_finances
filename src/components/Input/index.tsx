@@ -31,6 +31,7 @@ const Input: React.FC<IInputProps> = (props: IInputProps) => {
         {' '}
         {label}
         {' '}
+        {required && '*'}
       </label>
       <S.ContainerInput>
         <S.Input

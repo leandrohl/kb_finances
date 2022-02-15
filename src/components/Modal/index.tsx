@@ -1,10 +1,10 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, ReactNode } from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
 
 import * as S from './styles'
 
 interface ModalProps {
-  children: ReactElement,
+  children: ReactNode,
   closeModal?(): void,
   title?: string,
 }

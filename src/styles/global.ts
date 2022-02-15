@@ -5,10 +5,11 @@ export default createGlobalStyle`
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
   }
   html, body, #root {
      -webkit-font-smoothing: antialiased !important;
-     font-family: 'Montserrat', sans-serif;
+     
      width: 100%;
      height: 100%;
 

@@ -3,11 +3,12 @@ import React, { useState, useEffect } from 'react'
 // import { Container } from './styles';
 import { Chart } from 'react-google-charts'
 
+import { useAuth } from '../../../../contexts/Auth'
 import { useMonetary } from '../../../../contexts/Monetary'
 import api from '../../../../services/axios'
 
 const DespesaCategoria: React.FC = () => {
-  const { despesas } = useMonetary()
+  const { userLogged: { user } } = useAuth()
 
   const [options, setOptions] = useState({
     pieHole: 0.5,
@@ -41,7 +42,7 @@ const DespesaCategoria: React.FC = () => {
   const buscarDespesaPorCategoria = async () => {
     try {
       const req = {
-        email: 'gabriel@email.com'
+        email: user.email
       }
 
       const response = await api.post('/route/expense.php?operation=pc', req)
@@ -64,6 +65,7 @@ const DespesaCategoria: React.FC = () => {
 
   return (
     <div>
+      <h3>Despesa por categoria</h3>
       <Chart
         width={'100%'}
         height={'300px'}

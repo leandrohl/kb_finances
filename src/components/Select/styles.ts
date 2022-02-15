@@ -3,6 +3,12 @@ import styled from 'styled-components'
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
+
+  > span {
+    font-size: 12px;
+    color: ${props => props.theme.red};
+    margin-top: 4px;
+  }
 `
 
 export const Label = styled.label(({ color, theme }) => `
@@ -19,9 +25,6 @@ export const Select = styled.select(({ theme, disabled }) => `
   outline-color: ${theme.primary};
   color: color: ${theme.gray3};
 
-  > option {
-    padding: 16px;
-  }
 `)
 
 export const Option = styled.option`

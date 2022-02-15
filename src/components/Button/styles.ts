@@ -10,7 +10,7 @@ export const Button = styled.button((props) => `
   color: ${props.theme.white};
   border-radius: 4px;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 600;
   transition: all .2s;
 
    &:hover, &:disabled {

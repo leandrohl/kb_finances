@@ -7,6 +7,7 @@ import {
 import { useAuth } from '../contexts/Auth'
 import Home from '../pages/Home'
 import Login from '../pages/Login'
+import UserRegistration from '../pages/UserRegistration'
 
 // eslint-disable-next-line react/prop-types
 function PrivateRoute ({ component: Component, ...rest }) {
@@ -27,6 +28,7 @@ export default function Routes () {
     <BrowserRouter>
       <Switch>
         <Route path="/login" exact component={Login} />
+        <Route path="/user_registration" exact component={UserRegistration} />
         <PrivateRoute path="/" exact component={Home} />
       </Switch>
     </BrowserRouter>

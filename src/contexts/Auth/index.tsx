@@ -24,16 +24,6 @@ export const AuthProvider: React.FC = ({ children }) => {
     }
   }, [])
 
-  const updateEconomy = (newEconomy: number) => {
-    setUser({
-      user: {
-        ...user.user,
-        economy: newEconomy
-      },
-      signed: user.signed
-    })
-  }
-
   const getUserSession = (): IUser | null => {
     const session = storageLocal.getLocalStorage<IUser>(USER_GET)
     if (session) {
@@ -57,7 +47,6 @@ export const AuthProvider: React.FC = ({ children }) => {
     <AuthContext.Provider value={{
       signIn,
       signOut,
-      updateEconomy,
       userLogged: user
     }}
     >

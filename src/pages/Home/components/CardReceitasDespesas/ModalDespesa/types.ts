@@ -6,13 +6,6 @@ export interface IModalDespesaProps {
   modeEdition: boolean;
 }
 
-export enum CategoryDespesa {
-  Sobrevivência = 0,
-  Cultura = 1,
-  ExtraImprevisto = 2,
-  Opcionais = 3
-}
-
 export class DespesaInfo {
   category = 0;
   description = '';

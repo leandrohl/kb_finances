@@ -7,7 +7,8 @@ export const Container = styled.div`
   padding: 16px 0;
 
   textarea {
-
+    padding: 8px;
+    font-size: 12px;
   }
 
   button {

@@ -24,8 +24,8 @@ const ComoMelhorarEconomia: React.FC = () => {
       }
       const response = await api.post('/route/kakeibo.php?operation=get_annotation', req)
 
-      if (response) {
-        setRegistro(response.data)
+      if (response.data) {
+        setRegistro(response.data.anotacao || '')
       }
     } catch {
 
@@ -58,11 +58,12 @@ const ComoMelhorarEconomia: React.FC = () => {
 
   return (
     <S.Container>
+      <h3>Como melhorar minha economia</h3>
       <textarea
         value={registro}
         onChange={(e) => setRegistro(e.target.value)}
-        rows={4}
-        cols={50}
+        rows={6}
+        cols={60}
 
       />
       <Button

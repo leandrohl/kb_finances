@@ -12,10 +12,11 @@ export const ContainerMenu = styled.div`
     justify-content: space-between;
 `
 
-export const Data = styled.span`
+export const Data = styled.div`
     display: flex;
     justify-content: space-between;
-    border: solid 2px ${(props) => props.theme.white};;
+    align-items: center;
+    border: solid 2px ${(props) => props.theme.white};
     color: ${(props) => props.theme.white};;
     border-radius: 32px;
     font-size: 16px;

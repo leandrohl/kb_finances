@@ -1,6 +1,6 @@
 import React, { SyntheticEvent, useEffect, useState } from 'react'
 import { RiMoneyDollarBoxLine } from 'react-icons/ri'
-import { Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 import Button from '../../components/Button'
 import Input from '../../components/Input'
@@ -8,53 +8,38 @@ import { useAuth } from '../../contexts/Auth'
 import { IUser } from '../../contexts/Auth/types'
 import api from '../../services/axios'
 import * as S from './styles'
-import { Registrations, RegistrationsErrors } from './types'
+import { LoginError, LoginInfo } from './types'
 
 const Login: React.FC = () => {
-  const [registration, setRegistration] = useState<Registrations>(new Registrations())
-  const [registrationError, setRegistrationError] = useState<RegistrationsErrors>(new RegistrationsErrors())
+  const [registration, setRegistration] = useState<LoginInfo>(new LoginInfo())
   const [loading, setLoading] = useState(false)
   const { signIn, userLogged } = useAuth()
 
-  const validateRequiredFields = (requiredFields: object) => {
-    const fieldsArr = Object.keys(requiredFields)
-    const errors = { ...registrationError }
-
-    fieldsArr.forEach((field) => {
-      if (!requiredFields) {
-        setRegistrationError({
-          ...errors,
-          [field]: 'Esse campo é de preenchimento obrigatório'
-        })
-      }
-    })
-    // setRegistrationError(errors)
-  }
-
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault()
+    setRegistration({ ...registration, error: new LoginError() })
     setLoading(true)
 
-    if (!registration.email || !registration.password) validateRequiredFields(registrationError)
-    else {
-      try {
-        const response = await api.post<IUser>('/route/login.php', registration)
+    try {
+      const response = await api.post<IUser>('/route/login.php', registration)
 
-        if (response.status) {
-          const user = {
-            ...response.data,
-            email: registration.email,
-            password: registration.password
-          }
-          signIn(user)
+      if (response.status) {
+        const user = {
+          ...response.data,
+          email: registration.email,
+          password: registration.password
         }
-      } catch (e: any) {
-        if (e.property === 'email') {
-          setRegistrationError({ ...registrationError, email: e.message })
-        } else if (e.property === 'password') {
-          setRegistrationError({ ...registrationError, password: e.message })
-        }
+        signIn(user)
       }
+    } catch (e: any) {
+      const error = e.response.data
+      const errors = { ...registration.error }
+      if (error.property === 'email') {
+        errors.email = error.message
+      } else if (error.property === 'password') {
+        errors.password = error.message
+      }
+      setRegistration({ ...registration, error: errors })
     }
 
     setLoading(false)
@@ -78,10 +63,7 @@ const Login: React.FC = () => {
       <S.Container>
         <S.Form onSubmit={(e) => handleSubmit(e)} onKeyPress={onEnterDown}>
           <S.Logo>
-            <RiMoneyDollarBoxLine
-              color="#835DAA"
-              size={28}
-            />
+            <RiMoneyDollarBoxLine color="#835DAA" size={28} />
             <span>KB Finances</span>
           </S.Logo>
           <Input
@@ -89,9 +71,11 @@ const Login: React.FC = () => {
             name="email"
             type="email"
             value={registration.email}
-            onChange={(e) => setRegistration({ ...registration, email: e.target.value })}
-            error={!!registrationError.email}
-            labelError={registrationError.email}
+            onChange={(e) =>
+              setRegistration({ ...registration, email: e.target.value })
+            }
+            error={!!registration.error.email}
+            labelError={registration.error.email}
             required
           />
           <Input
@@ -99,15 +83,18 @@ const Login: React.FC = () => {
             name="senha"
             type="password"
             value={registration.password}
-            onChange={(e) => setRegistration({ ...registration, password: e.target.value })}
-            error={!!registrationError.password}
-            labelError={registrationError.password}
+            onChange={(e) =>
+              setRegistration({ ...registration, password: e.target.value })
+            }
+            error={!!registration.error.password}
+            labelError={registration.error.password}
             required
           />
-          <Button
-            text="Entrar"
-            loading={loading}
-          />
+          <Button text="Entrar" loading={loading} />
+
+          <S.CardFooter>
+            Ou faça seu <Link to="/user_registration">Cadastro</Link>
+          </S.CardFooter>
         </S.Form>
       </S.Container>
     </>

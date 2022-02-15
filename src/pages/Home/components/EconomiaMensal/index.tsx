@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Chart } from 'react-google-charts'
 
 import Button from '../../../../components/Button'
 import Input from '../../../../components/Input'
@@ -10,7 +9,7 @@ import api from '../../../../services/axios'
 import * as S from './styles'
 
 const EconomiaMensal: React.FC = () => {
-  const { userLogged: { user }, updateEconomy } = useAuth()
+  const { userLogged: { user } } = useAuth()
   const { receitaInfo, despesaInfo } = useMonetary()
   const [registro, setRegistro] = useState(0)
 
@@ -34,7 +33,6 @@ const EconomiaMensal: React.FC = () => {
 
       if (response) {
         setEconomizarPorcentagem(response.data)
-        updateEconomy(response.data)
       }
     } catch {
 
@@ -53,7 +51,6 @@ const EconomiaMensal: React.FC = () => {
 
       if (response) {
         setEconomizarPorcentagem(registro)
-        updateEconomy(registro)
         ToastNotification({
           id: 'error',
           content: 'Economia mensal atualizada com sucesso'
@@ -65,14 +62,21 @@ const EconomiaMensal: React.FC = () => {
   }
 
   return (
-    <div>
-      <S.Grafico economizar={economizarPorcentagem}>
-        <span>R$ {economizarValor}</span>
-        <S.Gastos gasto={gastoPercent} economizar={economizarPorcentagem} >
+    <S.Container>
+      <h3>Economia mensal</h3>
+      {
+        gastoPercent
+          ? (
+            <S.Grafico economizar={economizarPorcentagem}>
+              <span>R$ {economizarValor || 0}</span>
+              <S.Gastos gasto={gastoPercent} economizar={economizarPorcentagem} >
           R$ { despesaInfo.toFixed(2) }
-        </S.Gastos>
-      </S.Grafico>
-      <S.Container>
+              </S.Gastos>
+            </S.Grafico>)
+          : <> </>
+      }
+
+      <S.ContainerInput>
         <Input
           label="Quanto você deseja economizar (em porcentagem) ? "
           name="economizar"
@@ -91,9 +95,9 @@ const EconomiaMensal: React.FC = () => {
           text="Salvar"
           onClick={salvarEconomiaPrevista}
         />
-      </S.Container>
+      </S.ContainerInput>
 
-    </div>
+    </S.Container>
   )
 }
 

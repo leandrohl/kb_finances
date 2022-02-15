@@ -1,11 +1,12 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable lines-between-class-members */
-export class Registrations {
+export class LoginInfo {
   email = ''
   password = ''
+  error: LoginError = new LoginError()
 }
 
-export class RegistrationsErrors {
+export class LoginError {
   email = ''
   password = ''
 }

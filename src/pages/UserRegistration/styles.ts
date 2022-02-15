@@ -1,4 +1,3 @@
-/* eslint-disable arrow-body-style */
 import styled from 'styled-components'
 
 export const Container = styled.div(({ theme }) => `
@@ -37,7 +36,7 @@ export const Form = styled.form(({ theme }) => `
    border: 1px solid ${theme.gray2};
    border-radius: 4px;
    > div {
-     margin: 15px 0;
+     margin: 12px 0;
    }
    > button {
      margin-top: 16px;

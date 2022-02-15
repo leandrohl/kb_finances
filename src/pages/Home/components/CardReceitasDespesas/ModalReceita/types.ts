@@ -5,10 +5,13 @@ export interface IModalReceitaProps {
   modeEdition: boolean;
 }
 
-export enum CategoryReceita {
-  Salario = 0,
-  Presente = 1,
-  Investimento = 2
+export class ReceitaError {
+  description = ''
+  value = ''
+  category = ''
+  email = ''
+  // eslint-disable-next-line camelcase
+  receipt_date = ''
 }
 
 export class ReceitaInfo {
@@ -18,4 +21,5 @@ export class ReceitaInfo {
   email = ''
   // eslint-disable-next-line camelcase
   receipt_date = ''
+  error = new ReceitaError()
 }

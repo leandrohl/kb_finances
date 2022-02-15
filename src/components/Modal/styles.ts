@@ -11,8 +11,8 @@ export const Container = styled.div(({ theme }) => `
   left: 0;
   right: 0;
   justify-content: center;
-    align-items: center;
-  background-color: rgb(118 118 118 / 38%);
+  align-items: center;
+  background-color: rgb(0 0 0 / 80%);
   @media (max-width: 800px) {
     height: 100%;
    }
