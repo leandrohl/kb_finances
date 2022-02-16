@@ -24,12 +24,7 @@ const ModalDespesa = (props: IModalDespesaProps) => {
 
   const [registration, setRegistration] = useState<DespesaInfo>(new DespesaInfo())
   const [loading, setLoading] = useState(false)
-  const [categorias] = useState<ListItem[]>([
-    { key: 0, value: 'Sobrevivência' },
-    { key: 1, value: 'Cultura' },
-    { key: 2, value: 'Extra/Imprevisto' },
-    { key: 3, value: 'Opcionais' }
-  ])
+  const [categorias, setCategorias] = useState<ListItem[]>([])
 
   const buscarInfoDespesa = async () => {
     try {
@@ -53,6 +48,28 @@ const ModalDespesa = (props: IModalDespesaProps) => {
       buscarInfoDespesa()
     }
   }, [modeEdition])
+
+  useEffect(() => {
+    buscarCategoriasDespesa()
+  }, [])
+
+  const buscarCategoriasDespesa = async () => {
+    try {
+      const req = {
+        email: user.email
+      }
+      const response = await api.post('/route/expense.php?operation=get_categories', req)
+      if (response.data) {
+        const categoriasLista = response.data.map((categoria: any) => {
+          return {
+            key: categoria.id,
+            value: categoria.categoria
+          }
+        })
+        setCategorias(categoriasLista)
+      }
+    } catch {}
+  }
 
   const addDespesa = async (e: SyntheticEvent) => {
     e.preventDefault()

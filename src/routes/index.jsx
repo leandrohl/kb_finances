@@ -2,7 +2,7 @@
 /* eslint-disable arrow-body-style */
 import React from 'react'
 import {
-  BrowserRouter, Switch, Route, Redirect, useHistory
+  BrowserRouter, Switch, Route, Redirect
 } from 'react-router-dom'
 
 import { USER_GET } from '../configs/constants'
@@ -21,25 +21,12 @@ function PrivateRoute ({ component: Component, ...rest }) {
   )
 }
 
-function PublicRoute ({ component: Component, ...rest }) {
-  const { replace, location } = useHistory()
-
-  const goToRedirect = (pathRequest) => {
-    if (location.pathname !== pathRequest) replace(pathRequest)
-    return pathRequest
-  }
-
-  return (
-    <Route exact path={goToRedirect(rest.path)} render={props => (<Component {...props} />)} />
-  )
-}
-
 export default function Routes () {
   return (
     <BrowserRouter>
       <Switch>
-        <PublicRoute path="/login" exact component={Login} />
-        <PublicRoute path="/user_registration" exact component={UserRegistration} />
+        <Route path="/login" exact component={Login} />
+        <Route path="/user_registration" exact component={UserRegistration} />
         <PrivateRoute path="/" exact component={Home} />
       </Switch>
     </BrowserRouter>

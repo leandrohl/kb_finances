@@ -32,6 +32,7 @@ export const Grafico = styled.div<{economizar: number}>`
     top: -20px;
     left: ${props => `${100 - props.economizar}%`};
     border-bottom: 1px solid black;
+    white-space: nowrap;
   }
 `
 

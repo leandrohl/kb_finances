@@ -10,7 +10,7 @@ import * as S from './styles'
 
 const EconomiaMensal: React.FC = () => {
   const { userLogged: { user } } = useAuth()
-  const { receitaInfo, despesaInfo } = useMonetary()
+  const { receitaInfo, despesaInfo, dataAtual } = useMonetary()
   const [registro, setRegistro] = useState(0)
 
   const [economizarPorcentagem, setEconomizarPorcentagem] = useState(0)
@@ -20,14 +20,14 @@ const EconomiaMensal: React.FC = () => {
 
   useEffect(() => {
     buscarEconomiaPrevista()
-  }, [user])
+  }, [user, dataAtual])
 
   const buscarEconomiaPrevista = async () => {
     try {
       const req = {
         email: user.email,
-        month: 2,
-        year: 2022
+        month: dataAtual.mes + 1,
+        year: dataAtual.ano
       }
       const response = await api.post('/route/kakeibo.php?operation=get_economy', req)
 
@@ -46,8 +46,8 @@ const EconomiaMensal: React.FC = () => {
       const req = {
         economy: registro,
         email: user.email,
-        month: 2,
-        year: 2022
+        month: dataAtual.mes + 1,
+        year: dataAtual.ano
       }
       const response = await api.post('/route/kakeibo.php?operation=set_economy', req)
 
@@ -70,7 +70,7 @@ const EconomiaMensal: React.FC = () => {
         gastoPercent
           ? (
             <S.Grafico economizar={economizarPorcentagem}>
-              <span>R$ {economizarValor || 0}</span>
+              <span>{100 - economizarPorcentagem} %</span>
               <S.Gastos gasto={gastoPercent} economizar={economizarPorcentagem} >
           R$ { despesaInfo.toFixed(2) }
               </S.Gastos>
