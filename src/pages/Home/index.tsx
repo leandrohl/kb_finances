@@ -32,7 +32,7 @@ const Home: React.FC = () => {
     } catch (e: any) {
       ToastNotification({
         id: `error-${e.response}`,
-        content: 'Não foi possível buscas as despesas'
+        content: 'Não foi possível buscar as despesas'
       })
     }
     setLoading(false)
