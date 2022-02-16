@@ -1,4 +1,5 @@
 import React from 'react'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 import { ThemeProvider } from 'styled-components'
 
@@ -8,14 +9,15 @@ import { MonetaryProvider } from './contexts/Monetary'
 import Routes from './routes'
 import GlobalStyle from './styles/global'
 import Theme from './styles/theme'
-
 function App () {
   return (
     <AuthProvider>
       <MonetaryProvider>
         <ThemeProvider theme={Theme}>
-          <Routes />
-          <ToastNotificationContainer />
+          <Router>
+            <Routes />
+            <ToastNotificationContainer />
+          </Router>
           <GlobalStyle />
         </ThemeProvider>
       </MonetaryProvider>
