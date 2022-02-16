@@ -27,7 +27,7 @@ const Login: React.FC = () => {
         password: registration.password
       }
       const response = await api.post<IUser>('/route/login.php', req)
-
+      console.log(response)
       if (response.status && response.data) {
         const user = {
           ...response.data,
