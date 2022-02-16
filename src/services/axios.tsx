@@ -1,7 +1,10 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'https://kbfinances.herokuapp.com/'
+  baseURL: 'https://kbfinances.herokuapp.com/',
+  headers: {
+    origin: document.location.origin
+  }
 })
 
 // apiConfig.interceptors.request.use(async (config) => {
