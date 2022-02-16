@@ -7,7 +7,7 @@ interface ILoadingProps {
 }
 
 const Loading: React.FC<ILoadingProps> = (props: ILoadingProps) => {
-  const { frase, show } = props
+  const { show } = props
 
   const renderLoading = () => (
     <S.ContainerLoading>
