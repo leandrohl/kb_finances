@@ -20,6 +20,7 @@ const EconomiaMensal: React.FC = () => {
 
   useEffect(() => {
     buscarEconomiaPrevista()
+    console.log(economizarValor)
   }, [user, dataAtual])
 
   const buscarEconomiaPrevista = async () => {
