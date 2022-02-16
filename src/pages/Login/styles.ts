@@ -55,9 +55,9 @@ export const Form = styled.form(({ theme }) => `
 
 export const CardFooter = styled.footer`
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   margin-top: 16px;
-
+  font-size: 14px;
   a {
     padding-left: 4px;
     color: ${props => props.theme.primary};

@@ -9,6 +9,8 @@ export const Container = styled.div`
   textarea {
     padding: 8px;
     font-size: 12px;
+    margin-left: 40px;
+
   }
 
   button {

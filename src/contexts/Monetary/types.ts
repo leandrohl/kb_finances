@@ -9,15 +9,18 @@ export interface MonetaryContextData {
   editarDespesa: (despesaEditada: DespesaInfo) => void,
   excluirReceita: (id: number) => void,
   excluirDespesa: (id: number) => void,
+  voltarMes: () => void,
+  proximoMes: () => void,
   receitas: ReceitaInfo[],
   despesas: DespesaInfo[],
   receitaInfo: number,
   despesaInfo: number
+  dataAtual: DataAtual
 }
 
 export class DespesaInfo {
   id = 0
-  category = 0;
+  category = '';
   description = '';
   due_date = '';
   payment_date = '';
@@ -29,7 +32,12 @@ export class ReceitaInfo {
   id = 0
   description = ''
   value = 0
-  category = 0
+  category = ''
   email = ''
   receipt_date = ''
+}
+
+export class DataAtual {
+  mes = 0
+  ano = 0
 }

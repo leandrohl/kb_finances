@@ -17,6 +17,14 @@ export const ButtonsAdd = styled.div`
     align-items: center;
     justify-content: center;
     padding: 32px 0;
+
+    @media (max-width: 800px) {
+      flex-direction: column;
+
+      > button:last-child{
+        margin-top: 16px;
+      }
+    }
 `
 
 export const Button = styled.button`
@@ -37,6 +45,14 @@ export const Movimentacoes = styled.div`
     justify-content: center;
     padding: 16px 0;
     width: 80%;
+
+    @media (max-width: 800px) {
+      flex-direction: column;
+
+      > div:last-child{
+        margin-top: 16px;
+      }
+    }
 `
 
 export const CardMovimentacao = styled.div.attrs({
@@ -69,4 +85,5 @@ export const Category = styled.div`
     border: 1px solid ${(props) => props.color};
     border-radius: 20px;
     font-size: 12px;
+    width: max-content;
 `

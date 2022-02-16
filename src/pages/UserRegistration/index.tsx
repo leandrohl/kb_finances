@@ -13,6 +13,7 @@ const UserRegistration: React.FC = () => {
   const [registration, setRegistration] = useState<RegisterInfo>(new RegisterInfo())
   const [loading, setLoading] = useState(false)
   const { replace } = useHistory()
+
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -35,16 +36,23 @@ const UserRegistration: React.FC = () => {
         replace('/Login')
       }
     } catch (e: any) {
-      const error = e.response.data
-      const errors = { ...registration.error }
-      if (error.property === 'name') {
-        errors.name = error.message
-      } else if (error.property === 'email') {
-        errors.email = error.message
-      } else if (error.property === 'password') {
-        errors.password = error.message
+      if (e.response) {
+        const error = e.response.data
+        const errors = { ...registration.error }
+        if (error.property === 'name') {
+          errors.name = error.message
+        } else if (error.property === 'email') {
+          errors.email = error.message
+        } else if (error.property === 'password') {
+          errors.password = error.message
+        }
+        setRegistration({ ...registration, error: errors })
+      } else {
+        ToastNotification({
+          id: 'error',
+          content: 'Não foi possível realizar o seu cadastro'
+        })
       }
-      setRegistration({ ...registration, error: errors })
     }
 
     setLoading(false)

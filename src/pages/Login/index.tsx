@@ -4,6 +4,7 @@ import { Link, Redirect } from 'react-router-dom'
 
 import Button from '../../components/Button'
 import Input from '../../components/Input'
+import ToastNotification from '../../components/ToastNotification'
 import { useAuth } from '../../contexts/Auth'
 import { IUser } from '../../contexts/Auth/types'
 import api from '../../services/axios'
@@ -21,9 +22,13 @@ const Login: React.FC = () => {
     setLoading(true)
 
     try {
-      const response = await api.post<IUser>('/route/login.php', registration)
+      const req = {
+        email: registration.email,
+        password: registration.password
+      }
+      const response = await api.post<IUser>('/route/login.php', req)
 
-      if (response.status) {
+      if (response.status && response.data) {
         const user = {
           ...response.data,
           email: registration.email,
@@ -32,14 +37,22 @@ const Login: React.FC = () => {
         signIn(user)
       }
     } catch (e: any) {
-      const error = e.response.data
-      const errors = { ...registration.error }
-      if (error.property === 'email') {
-        errors.email = error.message
-      } else if (error.property === 'password') {
-        errors.password = error.message
+      console.log(e)
+      if (e.response) {
+        const error = e.response.data
+        const errors = { ...registration.error }
+        if (error.property === 'email') {
+          errors.email = error.message
+        } else if (error.property === 'password') {
+          errors.password = error.message
+        }
+        setRegistration({ ...registration, error: errors })
+      } else {
+        ToastNotification({
+          id: 'error',
+          content: 'Não foi possível realizar o login'
+        })
       }
-      setRegistration({ ...registration, error: errors })
     }
 
     setLoading(false)

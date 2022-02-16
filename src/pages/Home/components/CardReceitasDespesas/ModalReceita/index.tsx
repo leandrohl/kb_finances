@@ -48,7 +48,10 @@ const ModalReceita = (props: IModalReceitaProps) => {
       }
       const response = await api.post('/route/income.php?operation=f', req)
       if (response) {
-        setRegistration(response.data[0])
+        setRegistration({
+          ...response.data[0],
+          error: new ReceitaError()
+        })
       }
     } catch {}
   }
@@ -62,7 +65,7 @@ const ModalReceita = (props: IModalReceitaProps) => {
       if (response) {
         const categoriasLista = response.data.map((categoria: any) => {
           return {
-            key: categoria.id,
+            key: categoria.code,
             value: categoria.category
           }
         })
@@ -93,30 +96,9 @@ const ModalReceita = (props: IModalReceitaProps) => {
     } catch {}
   }
 
-  const validarCampos = (register: ReceitaInfo) => {
-    const keys: string[] = Object.keys(register)
-    const values: string[] = Object.values(register)
-
-    let error = new ReceitaError()
-
-    keys.forEach((key: string, index: number) => {
-      if (!values[index]) {
-        error = {
-          ...error,
-          [key]: 'Campo obrigatório'
-        }
-        console.log(error)
-      }
-    })
-
-    setRegistration({ ...registration, error })
-  }
-
   const addReceita = async (e: SyntheticEvent) => {
     e.preventDefault()
     setLoading(true)
-
-    validarCampos(registration)
 
     try {
       const req = {
@@ -127,14 +109,20 @@ const ModalReceita = (props: IModalReceitaProps) => {
       const response = await api.post('/route/income.php?operation=c', req)
 
       if (response.status) {
-        adicionarReceita({ ...registration, id: response.data.id })
+        const categoria = categorias.find(categoria => categoria.key === req.category)?.value
+        adicionarReceita({ ...registration, id: response.data.id, email: user.email, category: categoria || '' })
         ToastNotification({
-          id: 'alert',
+          id: 'success',
           content: 'Receita adicionada com sucesso'
         })
         close()
       }
-    } catch {}
+    } catch (e) {
+      ToastNotification({
+        id: 'error',
+        content: 'Não foi possível adicionar essa receita'
+      })
+    }
     setLoading(false)
   }
 
@@ -153,10 +141,16 @@ const ModalReceita = (props: IModalReceitaProps) => {
         const response = await api.post('/route/income.php?operation=u', req)
 
         if (response.status) {
-          editarReceita(req)
+          const categoria = categorias.find(categoria => categoria.key === req.category)?.value
+          editarReceita({ ...req, category: categoria || '' })
           close()
         }
-      } catch {}
+      } catch {
+        ToastNotification({
+          id: 'error',
+          content: 'Não foi possível editar essa receita'
+        })
+      }
     }
 
     setLoading(false)
@@ -171,7 +165,7 @@ const ModalReceita = (props: IModalReceitaProps) => {
       closeModal={close}
       title={modeEdition ? 'Editar Receita' : 'Adicionar Receita'}
     >
-      <Form>
+      <Form onSubmit={(e) => (modeEdition ? editReceita(e) : addReceita(e))}>
         <Container>
           <Input
             label="Descrição: "
@@ -231,16 +225,18 @@ const ModalReceita = (props: IModalReceitaProps) => {
             required
           />
         </Container>
-        <ContainerButton>
-          <Button onClick={close} text="Cancelar" color="#b5b5b5"/>
-          <Button text='Adicionar categoria' onClick={() => setOpenModalAddCategoria(true)}/>
-          <Button
-            loading={loading}
-            text={modeEdition ? 'Editar' : 'Adicionar'}
-            onClick={(e) => (modeEdition ? editReceita(e) : addReceita(e))}
-          />
-        </ContainerButton>
+
+        <Button
+          loading={loading}
+          text={modeEdition ? 'Editar receita' : 'Adicionar receita'}
+        />
+
       </Form>
+      <ContainerButton>
+        <Button onClick={close} text="Cancelar" color="#b5b5b5"/>
+        <Button text='Adicionar categoria' onClick={() => setOpenModalAddCategoria(true)}/>
+
+      </ContainerButton>
       {openModalAddCategoria && <ModalAddCategoria close={closeModalAdicionarCategoria} adicionarCategoria={(e, nomeCategoria) => addCategoria(e, nomeCategoria)} />}
     </Modal>
   )

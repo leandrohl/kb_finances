@@ -9,8 +9,9 @@ import * as S from './styles'
 
 const Header: React.FC = () => {
   const { signOut } = useAuth()
-  const { receitaInfo, despesaInfo } = useMonetary()
+  const { receitaInfo, despesaInfo, dataAtual, proximoMes, voltarMes } = useMonetary()
 
+  const meses = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro']
   return (
     <S.Container>
       <S.ContainerMenu>
@@ -19,10 +20,14 @@ const Header: React.FC = () => {
         <S.Data>
           <IoIosArrowBack
             size={16}
+            onClick={voltarMes}
+            style={{ cursor: 'pointer' }}
           />
-          fevereiro
+          {meses[dataAtual.mes]} / {dataAtual.ano}
           <IoIosArrowForward
             size={16}
+            onClick={proximoMes}
+            style={{ cursor: 'pointer' }}
           />
         </S.Data>
         <S.Logout onClick={() => signOut()}>Logout</S.Logout>

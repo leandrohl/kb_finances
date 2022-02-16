@@ -1,11 +1,6 @@
 import axios from 'axios'
 
-// const headers = {
-//   'Content-Type': 'application/json',
-//   'Authorization': 'JWT fefege...',
-// }
-
-const apiConfig = axios.create({
+const api = axios.create({
   baseURL: 'https://kbfinances.herokuapp.com/'
 })
 
@@ -17,4 +12,4 @@ const apiConfig = axios.create({
 //   return config;
 // });
 
-export default apiConfig
+export default api

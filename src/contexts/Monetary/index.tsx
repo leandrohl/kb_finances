@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
-import { MonetaryContextData, DespesaInfo, ReceitaInfo } from './types'
+import { MonetaryContextData, DespesaInfo, ReceitaInfo, DataAtual } from './types'
 
 export const MonetaryContext = createContext({} as MonetaryContextData)
 
@@ -9,41 +9,100 @@ export const MonetaryProvider: React.FC = ({ children }) => {
   const [despesas, setDespesas] = useState<DespesaInfo[]>([])
   const [receitaInfo, setReceitaInfo] = useState(0)
   const [despesaInfo, setDespesaInfo] = useState(0)
+  const [dataAtual, setDataAtual] = useState(new DataAtual())
 
   useEffect(() => {
+    const data = new Date()
+    setDataAtual({
+      mes: data.getMonth(),
+      ano: data.getFullYear()
+    })
+    setReceitaInfo(0)
+    setDespesaInfo(0)
     setReceitas([])
     setDespesas([])
   }, [])
 
+  const proximoMes = () => {
+    if (dataAtual.mes === 11) {
+      setDataAtual({
+        mes: 0,
+        ano: dataAtual.ano + 1
+      })
+    } else {
+      setDataAtual({
+        ...dataAtual,
+        mes: dataAtual.mes + 1
+      })
+    }
+  }
+
+  const voltarMes = () => {
+    if (dataAtual.mes === 0) {
+      setDataAtual({
+        mes: 11,
+        ano: dataAtual.ano - 1
+      })
+    } else {
+      setDataAtual({
+        ...dataAtual,
+        mes: dataAtual.mes - 1
+      })
+    }
+  }
+
+  const isMovimentacaoDataAtual = (data: string) => {
+    const dataRecebida = new Date(data)
+    if (dataRecebida.getMonth() === dataAtual.mes && dataRecebida.getFullYear() === dataAtual.ano) {
+      return true
+    } else return false
+  }
+
   const adicionarReceitas = (receitasInfo: ReceitaInfo[]) => {
-    setReceitas([...receitas, ...receitasInfo])
+    setReceitas([...receitasInfo])
 
     const values = receitasInfo.map(receita => Number(receita.value))
 
-    setReceitaInfo(receitaInfo + values.reduce((t, n) => n + t, 0))
+    setReceitaInfo(values.reduce((t, n) => n + t, 0))
   }
 
   const adicionarDespesas = (despesasInfo: DespesaInfo[]) => {
-    setDespesas([...despesas, ...despesasInfo])
+    setDespesas([...despesasInfo])
     const values = despesasInfo.map(despesa => Number(despesa.value))
 
-    setDespesaInfo(despesaInfo + values.reduce((t, n) => n + t, 0))
+    setDespesaInfo(values.reduce((t, n) => n + t, 0))
   }
 
   const adicionarReceita = (receita: ReceitaInfo) => {
-    setReceitas([...receitas, receita])
-    setReceitaInfo(receitaInfo + receita.value)
+    if (isMovimentacaoDataAtual(receita.receipt_date)) {
+      setReceitas([...receitas, receita])
+      setReceitaInfo(receitaInfo + receita.value)
+    }
+  }
+
+  const adicionarDespesa = (despesa: DespesaInfo) => {
+    if (isMovimentacaoDataAtual(despesa.payment_date)) {
+      setDespesas([...despesas, despesa])
+      setDespesaInfo(despesaInfo + despesa.value)
+    }
   }
 
   const editarReceita = (receitaEditada: ReceitaInfo) => {
-    const receitasFilter = receitas.filter(receita => receita.id !== receitaEditada.id)
-    setReceitas([receitaEditada, ...receitasFilter])
+    if (isMovimentacaoDataAtual(receitaEditada.receipt_date)) {
+      const receitasFilter = receitas.filter(receita => receita.id !== receitaEditada.id)
+      setReceitas([receitaEditada, ...receitasFilter])
+    } else {
+      excluirReceita(receitaEditada.id)
+    }
   }
 
   const editarDespesa = (despesaEditada: DespesaInfo) => {
-    const despesasFilter = despesas.filter(despesa => despesa.id !== despesaEditada.id)
-    setDespesas([despesaEditada, ...despesasFilter])
-    // setReceitaInfo(receitaInfo + receita.value)
+    if (isMovimentacaoDataAtual(despesaEditada.payment_date)) {
+      const despesasFilter = despesas.filter(despesa => despesa.id !== despesaEditada.id)
+      setDespesas([despesaEditada, ...despesasFilter])
+    } else {
+      excluirDespesa(despesaEditada.id)
+    }
   }
 
   const excluirReceita = (id: number) => {
@@ -67,11 +126,6 @@ export const MonetaryProvider: React.FC = ({ children }) => {
     }
   }
 
-  const adicionarDespesa = (despesa: DespesaInfo) => {
-    setDespesas([...despesas, despesa])
-    setDespesaInfo(despesaInfo + despesa.value)
-  }
-
   return (
     <MonetaryContext.Provider value={{
       adicionarDespesa,
@@ -85,7 +139,10 @@ export const MonetaryProvider: React.FC = ({ children }) => {
       editarReceita,
       excluirReceita,
       editarDespesa,
-      excluirDespesa
+      excluirDespesa,
+      proximoMes,
+      voltarMes,
+      dataAtual
     }} >
       {children}
     </MonetaryContext.Provider>

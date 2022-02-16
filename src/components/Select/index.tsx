@@ -28,7 +28,7 @@ const Select: React.FC<SelectProps> = (props: SelectProps) => {
 
   return (
     <S.Container>
-      <S.Label>
+      <S.Label error={error}>
         {label}
         {required && ' *'}
       </S.Label>
@@ -36,6 +36,7 @@ const Select: React.FC<SelectProps> = (props: SelectProps) => {
         disabled={disabled}
         value={value}
         onChange={onChange}
+        error={error}
       >
         {listItems.map(item => {
           return (

@@ -1,14 +1,14 @@
 /* eslint-disable arrow-body-style */
 import styled from 'styled-components'
 
-export const Container = styled.div(({ theme }) => `
+export const Container = styled.div<{error: boolean | undefined}>(({ theme, error }) => `
   display: flex;
   flex-direction: column;
 
   > label {
     padding-bottom: 8px;
     font-size: 14px;
-    color: ${theme.black}
+    color: ${error ? theme.red : theme.black}
   }
 
   > span {
@@ -52,8 +52,8 @@ export const ContainerInput = styled.div(({ theme }) => `
    }
 `)
 
-export const Input = styled.input(({
-  theme, type, disabled
+export const Input = styled.input<{error: boolean | undefined}>(({
+  theme, type, disabled, error
 }) => `
    padding: 14px 10px;
    width: 100%;
@@ -62,7 +62,8 @@ export const Input = styled.input(({
    outline-color: ${theme.primary};
    outline-width: thin;
    padding-right: ${type === 'password' && '40px'};
+   border: 1px solid ${error && theme.red};
    ::placeholder {
-     color: ${theme.gray3};
+     color: #fff;
    }
 `)

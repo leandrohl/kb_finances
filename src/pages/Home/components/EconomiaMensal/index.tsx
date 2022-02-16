@@ -20,7 +20,7 @@ const EconomiaMensal: React.FC = () => {
 
   useEffect(() => {
     buscarEconomiaPrevista()
-  }, [])
+  }, [user])
 
   const buscarEconomiaPrevista = async () => {
     try {
@@ -32,7 +32,9 @@ const EconomiaMensal: React.FC = () => {
       const response = await api.post('/route/kakeibo.php?operation=get_economy', req)
 
       if (response) {
-        setEconomizarPorcentagem(response.data)
+        const porcentagem = response.data.economy * 100
+        setEconomizarPorcentagem(porcentagem)
+        setRegistro(porcentagem)
       }
     } catch {
 

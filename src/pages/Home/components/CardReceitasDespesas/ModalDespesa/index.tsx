@@ -39,7 +39,9 @@ const ModalDespesa = (props: IModalDespesaProps) => {
       }
       const response = await api.post('/route/expense.php?operation=f', req)
       if (response) {
-        setRegistration(response.data[0])
+        setRegistration({
+          ...response.data[0]
+        })
       }
     } catch {
 
@@ -65,7 +67,8 @@ const ModalDespesa = (props: IModalDespesaProps) => {
       const response = await api.post('/route/expense.php?operation=c', req)
 
       if (response.status) {
-        adicionarDespesa({ ...registration, id: response.data.id })
+        const categoria = categorias.find(categoria => categoria.key === req.category)?.value
+        adicionarDespesa({ ...registration, id: response.data.id, category: categoria || '' })
         ToastNotification({
           id: `error-${id}`,
           content: 'Despesa adicionada com sucesso'
@@ -73,7 +76,10 @@ const ModalDespesa = (props: IModalDespesaProps) => {
         close()
       }
     } catch {
-
+      ToastNotification({
+        id: 'error',
+        content: 'Não foi possível adcionar essa despesa'
+      })
     }
     setLoading(false)
   }
@@ -93,11 +99,15 @@ const ModalDespesa = (props: IModalDespesaProps) => {
         const response = await api.post('/route/expense.php?operation=u', req)
 
         if (response.status) {
-          editarDespesa(req)
+          const categoria = categorias.find(categoria => categoria.key === req.category)?.value
+          editarDespesa({ ...req, category: categoria || '' })
           close()
         }
       } catch {
-
+        ToastNotification({
+          id: 'error',
+          content: 'Não foi possível editar essa despesa'
+        })
       }
     }
 
@@ -172,7 +182,7 @@ const ModalDespesa = (props: IModalDespesaProps) => {
         </ContainerInput>
         <ContainerButton>
           <Button onClick={close} text="Cancelar" color="#b5b5b5"/>
-          <Button loading={loading} text={modeEdition ? 'Editar' : 'Adicionar'}/>
+          <Button loading={loading} text={modeEdition ? 'Editar despesa' : 'Adicionar despesa'}/>
         </ContainerButton>
       </Form>
     </Modal>

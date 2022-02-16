@@ -12,13 +12,15 @@ import Header from './components/Header'
 import * as S from './styles'
 
 const Home: React.FC = () => {
-  const { adicionarReceitas, adicionarDespesas, despesas } = useMonetary()
+  const { adicionarReceitas, adicionarDespesas, despesas, dataAtual } = useMonetary()
   const { userLogged: { user } } = useAuth()
 
   const buscarDespesas = async () => {
     try {
       const req = {
-        email: user.email
+        email: user.email,
+        month: dataAtual.mes + 1,
+        year: dataAtual.ano
       }
       const response = await api.post('/route/expense.php?operation=r', req)
       if (response) {
@@ -35,7 +37,9 @@ const Home: React.FC = () => {
   const buscarReceitas = async () => {
     try {
       const req = {
-        email: user.email
+        email: user.email,
+        month: dataAtual.mes + 1,
+        year: dataAtual.ano
       }
 
       const response = await api.post('/route/income.php?operation=r', req)
@@ -51,9 +55,11 @@ const Home: React.FC = () => {
   }
 
   useEffect(() => {
-    buscarReceitas()
-    buscarDespesas()
-  }, [])
+    if (user) {
+      buscarReceitas()
+      buscarDespesas()
+    }
+  }, [dataAtual])
 
   return (
     <S.Container>

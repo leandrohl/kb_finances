@@ -13,7 +13,7 @@ const ComoMelhorarEconomia: React.FC = () => {
 
   useEffect(() => {
     buscarEconomiaPrevista()
-  }, [])
+  }, [user])
 
   const buscarEconomiaPrevista = async () => {
     try {

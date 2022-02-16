@@ -22,11 +22,11 @@ const Input: React.FC<IInputProps> = (props: IInputProps) => {
   const renderTypePassword = showPassword ? 'text' : 'password'
 
   const renderPasswordIcon = !showPassword
-    ? <AiOutlineEye onClick={() => setShowPassword(true)} />
-    : <AiOutlineEyeInvisible onClick={() => setShowPassword(false)} />
+    ? <AiOutlineEyeInvisible onClick={() => setShowPassword(true)} />
+    : <AiOutlineEye onClick={() => setShowPassword(false)} />
 
   return (
-    <S.Container>
+    <S.Container error={error}>
       <label htmlFor={name}>
         {' '}
         {label}
@@ -42,6 +42,7 @@ const Input: React.FC<IInputProps> = (props: IInputProps) => {
           required={required}
           min={min}
           max={max}
+          error={error}
         />
         {type === 'password' && (renderPasswordIcon)}
         {percent && <span> % </span>}

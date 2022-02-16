@@ -11,19 +11,19 @@ export const Container = styled.div`
   }
 `
 
-export const Label = styled.label(({ color, theme }) => `
+export const Label = styled.label<{error: boolean | undefined}>(({ color, theme, error }) => `
   padding-bottom: 8px;
   font-size: 14px;
-  color: ${theme.black};
+  color: ${error ? theme.red : theme.black};
 `)
 
-export const Select = styled.select(({ theme, disabled }) => `
+export const Select = styled.select<{error: boolean | undefined}>(({ theme, disabled, error }) => `
   padding: 14px 16px;
   border-radius: 4px;
   background-color: ${disabled ? theme.gray2 : 'transparent'};
-  border: 1px solid ${theme.gray3};
+  border: 1px solid ${error ? theme.red : theme.gray3};
   outline-color: ${theme.primary};
-  color: color: ${theme.gray3};
+  color: ${theme.black};
 
 `)
 
